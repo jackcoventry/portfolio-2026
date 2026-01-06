@@ -4,13 +4,13 @@
       "1": {
         "$type": "fontFamily",
         "$value": [
-          "DynaPuff",
+          "Forum",
           "system-ui",
           "-apple-system",
           "Segoe UI",
           "Helvetica Neue",
           "Arial",
-          "sans-serif"
+          "serif"
         ]
       },
       "2": {
@@ -49,11 +49,7 @@
       },
       "5": {
         "$type": "dimension",
-        "$value": "40px"
-      },
-      "6": {
-        "$type": "dimension",
-        "$value": "110px"
+        "$value": "clamp(3rem, -0.875rem + 8.333vw, 10rem)"
       }
     },
     "line-height": {
@@ -68,6 +64,9 @@
       },
       "4": {
         "$value": 1.1
+      },
+      "5": {
+        "$value": 0.875
       }
     },
     "letter-spacing": {
@@ -96,8 +95,8 @@
         "$value": {
           "fontFamily": "{font.family.1}",
           "fontWeight": "{font.weight.1}",
-          "fontSize": "{font.size.4}",
-          "lineHeight": "{font.line-height.4}"
+          "fontSize": "{font.size.5}",
+          "lineHeight": "{font.line-height.5}"
         },
         "$extensions": {
           "$targetElement": "h1",
@@ -108,7 +107,7 @@
         "$value": {
           "fontFamily": "{font.family.2}",
           "fontWeight": "{font.weight.1}",
-          "fontSize": "{font.size.3}",
+          "fontSize": "{font.size.4}",
           "lineHeight": "{font.line-height.4}"
         },
         "$extensions": {

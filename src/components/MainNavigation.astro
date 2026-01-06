@@ -1,0 +1,26 @@
+---
+type NavItem = {
+  href: string;
+  title: string;
+};
+
+const { items = [] } = Astro.props;
+---
+
+<header>
+  <nav>
+      {
+        items?.length > 0 ? (
+            <ul class="flex justify-between font-button">
+              <a href="#" class="p-5">Jack Coventry</a>
+
+              {items.map(function(item: NavItem) {
+                return (
+                  <li><a href={item.href} class="flex p-5">{item.title}</a></li>
+                )
+              })}
+            </ul>
+          ) : null
+        }
+    </nav>
+</header>
