@@ -1,0 +1,81 @@
+---
+export interface Props {
+  as?: keyof HTMLElementTagNameMap;
+  class?: string;
+  staggerMs?: number;
+  text: string;
+}
+
+function splitGraphemes(input: string): string[] {
+  if (typeof Intl !== 'undefined' && 'Segmenter' in Intl) {
+    const seg = new Intl.Segmenter(undefined, { granularity: 'grapheme' });
+    return Array.from(seg.segment(input), (s) => s.segment);
+  }
+  return Array.from(input);
+}
+
+const { text, as = 'span', class: className = '', staggerMs = 35 } = Astro.props;
+const Tag = as;
+const chars = splitGraphemes(text);
+---
+
+<Tag
+  aria-label={text}
+  class={`text-swap | inline-block | ${className}`}
+  style={`--stagger: ${staggerMs}ms;`}
+>
+  {
+    chars.map((ch, i) => (
+      <span class="char | relative inline-block overflow-hidden align-bottom" style={`--i:${i}`}>
+        <span class="top | inline-block will-change-transform">{ch === ' ' ? '\u00A0' : ch}</span>
+        <span class="bottom | absolute top-0 left-0 inline-block will-change-transform">
+          {ch === ' ' ? '\u00A0' : ch}
+        </span>
+      </span>
+    ))
+  }
+</Tag>
+
+<style>
+  .text-swap {
+    --stagger: 35ms;
+    --duration: 450ms;
+    --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .text-swap .char {
+    line-height: 1.1;
+  }
+
+  .text-swap .top,
+  .text-swap .bottom {
+    transition-property: transform;
+    transition-duration: var(--duration);
+    transition-timing-function: var(--ease);
+    transition-delay: 0ms;
+  }
+
+  .text-swap:hover .top,
+  .text-swap:hover .bottom {
+    transition-delay: calc(var(--i) * var(--stagger));
+  }
+
+  .text-swap .bottom {
+    transform: translateY(110%);
+  }
+
+  .text-swap:hover .top {
+    transform: translateY(-110%);
+  }
+
+  .text-swap:hover .bottom {
+    transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .text-swap .top,
+    .text-swap .bottom {
+      transition: none;
+    }
+  }
+</style>

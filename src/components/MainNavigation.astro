@@ -1,4 +1,6 @@
 ---
+import TextSwap from './TextSwap.astro';
+
 type NavItem = {
   href: string;
   title: string;
@@ -7,20 +9,32 @@ type NavItem = {
 const { items = [] } = Astro.props;
 ---
 
-<header>
+<header class="header | absolute z-10 w-full">
   <nav>
-      {
-        items?.length > 0 ? (
-            <ul class="flex justify-between font-button">
-              <a href="#" class="p-5">Jack Coventry</a>
+    {
+      items?.length > 0 ? (
+        <ul class="font-body flex justify-between">
+          <a href="#" class="p-5">
+            Jack Coventry
+          </a>
 
-              {items.map(function(item: NavItem) {
-                return (
-                  <li><a href={item.href} class="flex p-5">{item.title}</a></li>
-                )
-              })}
-            </ul>
-          ) : null
-        }
-    </nav>
+          {items.map(function (item: NavItem) {
+            return (
+              <li>
+                <a href={item.href}>
+                  <TextSwap text={item.title} class="flex p-5" />
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      ) : null
+    }
+  </nav>
 </header>
+
+<style>
+  .header {
+    height: var(--navigation-height);
+  }
+</style>

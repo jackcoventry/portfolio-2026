@@ -1,6 +1,23 @@
 ---
-const { text } = Astro.props;
+type Props = {
+  title: string;
+  text?: string;
+};
+
+const { title, text } = Astro.props;
 ---
-<section>
-  <h1 class="font-heading">{text}</h1>
+
+<section
+  class="introduction | grid min-h-[100dvh] grid-cols-1 items-center overflow-hidden bg-pink-100 pb-8"
+>
+  <div class="mx-auto px-5">
+    <h1 class="font-heading">{title}<span class="text-sun-500 animate-pulse">.</span></h1>
+    <!-- <p class="font-sub-heading pt-6 text-left">{text}</p> -->
+  </div>
 </section>
+
+<style>
+  .introduction {
+    padding-top: var(--navigation-height);
+  }
+</style>
