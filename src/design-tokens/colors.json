@@ -1,0 +1,35 @@
+{
+  "color": {
+    "$type": "color",
+    "sun": {
+      "100": {
+        "$value": "#EEDDFD"
+      },
+      "200": {
+        "$value": "#DCBBFC"
+      },
+      "300": {
+        "$value": "#CB99FA"
+      },
+      "400": {
+        "$value": "#BA77F9"
+      },
+      "500": {
+        "$value": "#A855F7",
+        "$description": "Base colour"
+      },
+      "600": {
+        "$value": "#8815F4"
+      },
+      "700": {
+        "$value": "#6609BE"
+      },
+      "800": {
+        "$value": "#44067F"
+      },
+      "900": {
+        "$value": "#22033F"
+      }
+    }
+  }
+}

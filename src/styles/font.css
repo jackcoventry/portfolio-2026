@@ -1,0 +1,19 @@
+/**
+ * Global typography utilities
+ */
+
+@utility font-heading {
+  font: var(--font-title-1);
+}
+
+@utility font-sub-heading {
+  font: var(--font-title-2);
+}
+
+@utility font-body {
+  font: var(--font-body-1);
+}
+
+@utility font-button {
+  font: var(--font-button-1);
+}
