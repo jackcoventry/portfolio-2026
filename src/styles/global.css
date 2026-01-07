@@ -1,6 +1,6 @@
-@import "tailwindcss";
-@import "./tokens.theme.css";
-@import "./font.css";
+@import 'tailwindcss';
+@import './tokens.theme.css';
+@import './font.css';
 
 :root {
   --navigation-height: 75px;

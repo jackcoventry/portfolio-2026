@@ -49,7 +49,7 @@
       },
       "5": {
         "$type": "dimension",
-        "$value": "clamp(3rem, -0.875rem + 8.333vw, 10rem)"
+        "$value": "clamp(1rem, min(20vmin, 10vw), 10rem)"
       }
     },
     "line-height": {

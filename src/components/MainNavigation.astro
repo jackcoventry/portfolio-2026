@@ -9,24 +9,35 @@ type NavItem = {
 const { items = [] } = Astro.props;
 ---
 
-<header class="header | absolute z-10 w-full">
-  <nav>
+<header id="header" class="header | absolute z-10 w-full max-lg:flex">
+  <span class="font-body z-20 block px-7 py-5 lg:hidden">Jack Coventry</span>
+
+  <button
+    id="navigationToggle"
+    type="button"
+    class="z-20 ml-auto block cursor-pointer px-7 py-5 lg:hidden"
+    aria-controls="navigation"
+    aria-expanded="false"
+  >
+    Menu
+  </button>
+
+  <nav
+    id="navigation"
+    class="hidden max-lg:fixed max-lg:top-0 max-lg:left-0 max-lg:z-10 max-lg:h-dvh max-lg:w-dvw max-lg:items-center max-lg:justify-center max-lg:bg-amber-300 lg:block lg:pt-0"
+    aria-label="Primary"
+  >
     {
       items?.length > 0 ? (
-        <ul class="font-body flex justify-between">
-          <a href="#" class="p-5">
-            Jack Coventry
-          </a>
-
-          {items.map(function (item: NavItem) {
-            return (
-              <li>
-                <a href={item.href}>
-                  <TextSwap text={item.title} class="flex p-5" />
-                </a>
-              </li>
-            );
-          })}
+        <ul class="font-body flex justify-between max-lg:max-h-full max-lg:w-full max-lg:flex-col max-lg:items-center max-lg:overflow-auto max-lg:text-center">
+          <span class="px-7 py-5 max-lg:hidden">Jack Coventry</span>
+          {items.map((item: NavItem) => (
+            <li>
+              <a href={item.href} class="max-lg:font-heading block">
+                <TextSwap text={item.title} class="flex px-7 py-5" />
+              </a>
+            </li>
+          ))}
         </ul>
       ) : null
     }
@@ -37,4 +48,79 @@ const { items = [] } = Astro.props;
   .header {
     height: var(--navigation-height);
   }
+
+  .navigation-offset {
+    padding-top: var(--navigation-height);
+
+    @media (width >= 64rem) {
+      padding-top: 0;
+    }
+  }
 </style>
+
+<script>
+  import { navigationOpen, navigationToggle } from '@/store/navigation.js';
+  import { createFocusTrap } from '@/utils/focusTrap';
+
+  const toggle = document.getElementById('navigationToggle');
+  const navEl = document.getElementById('navigation');
+  const header = document.getElementById('header');
+
+  let releaseTrap: (() => void) | null = null;
+  let previousBodyOverflow = '';
+
+  function setUI(open: boolean) {
+    if (!toggle || !navEl) return;
+
+    if (open) {
+      previousBodyOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      navEl.classList.add('navigation-offset', 'flex');
+      navEl.classList.remove('hidden');
+    } else {
+      document.body.style.overflow = previousBodyOverflow || '';
+      navEl.classList.remove('navigation-offset', 'flex');
+      navEl.classList.add('hidden');
+    }
+
+    toggle.textContent = open ? 'Close' : 'Menu';
+    toggle.setAttribute('aria-expanded', String(open));
+  }
+
+  function openNav() {
+    if (!toggle || !navEl || !header) return;
+
+    setUI(true);
+    releaseTrap?.();
+    releaseTrap = createFocusTrap(header, {
+      initialFocus: 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
+      onEscape: () => navigationOpen.set(false),
+    });
+  }
+
+  function closeNav() {
+    setUI(false);
+    releaseTrap?.();
+    releaseTrap = null;
+  }
+
+  if (toggle && navEl) {
+    setUI(navigationOpen.get());
+
+    const unsubscribe = navigationOpen.subscribe((open) => {
+      if (open) openNav();
+      else closeNav();
+    });
+
+    toggle.addEventListener('click', navigationToggle);
+
+    const cleanup = () => {
+      closeNav();
+      unsubscribe?.();
+      toggle.removeEventListener('click', navigationToggle);
+    };
+
+    document.addEventListener('astro:before-swap', cleanup);
+    window.addEventListener('pagehide', cleanup);
+  }
+</script>
