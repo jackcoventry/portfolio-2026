@@ -37,7 +37,7 @@ const { title, text } = Astro.props;
   {text && <p class="font-sub-heading text-center">{text}</p>}
   {
     posts.length > 0 ? (
-      <ul class="mx-auto grid max-w-7xl gap-4 lg:grid-cols-3">
+      <ul class="mx-auto grid max-w-96 gap-4 xl:max-w-7xl xl:grid-cols-3">
         {posts?.map((item, index) => (
           <li class="col-span-1">
             <SwipeImage threshold={0.3} delayMs={200 * index}>

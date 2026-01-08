@@ -4,6 +4,7 @@ import TextSwap from './TextSwap.astro';
 type NavItem = {
   href: string;
   title: string;
+  externalLink: boolean;
 };
 
 const { items = [] } = Astro.props;
@@ -30,14 +31,28 @@ const { items = [] } = Astro.props;
     {
       items?.length > 0 ? (
         <ul class="font-body flex justify-between max-lg:max-h-full max-lg:w-full max-lg:flex-col max-lg:items-center max-lg:overflow-auto max-lg:text-center">
-          <span class="px-7 py-5 max-lg:hidden">Jack Coventry</span>
-          {items.map((item: NavItem) => (
-            <li>
-              <a href={item.href} class="max-lg:font-heading block">
-                <TextSwap text={item.title} class="flex px-7 py-5" />
-              </a>
-            </li>
-          ))}
+          <a href="/" class="px-7 py-5 max-lg:hidden">
+            Jack Coventry
+          </a>
+          {items.map((item: NavItem) => {
+            const openInNewTab = Boolean(item?.externalLink);
+            const attributes = {
+              href: item.href,
+              ...(openInNewTab
+                ? {
+                    target: '_blank',
+                    rel: 'noopener noreferrer',
+                  }
+                : null),
+            };
+            return (
+              <li>
+                <a {...attributes} class="max-lg:font-heading block">
+                  <TextSwap text={item.title} class="flex px-7 py-5" />
+                </a>
+              </li>
+            );
+          })}
         </ul>
       ) : null
     }

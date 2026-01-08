@@ -30,7 +30,7 @@ const hasImage = Boolean(image);
     href ? (
       <a
         href={href}
-        class="relative z-20 flex h-full cursor-pointer flex-col gap-3 p-5 lg:h-125"
+        class="relative z-20 flex h-125 cursor-pointer flex-col gap-3 p-5"
         aria-label={`Read more: ${title}`}
       >
         {title && <h3 class="font-sub-heading">{title}</h3>}
@@ -41,7 +41,7 @@ const hasImage = Boolean(image);
         </span>
       </a>
     ) : (
-      <div class="relative z-20 flex h-full flex-col gap-3 p-5 lg:h-125">
+      <div class="relative z-20 flex h-125 flex-col gap-3 p-5">
         {title && <h3 class="font-sub-heading">{title}</h3>}
         {text && <p class="font-body">{text}</p>}
       </div>

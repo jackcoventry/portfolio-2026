@@ -5,16 +5,14 @@
       "title": "Blog"
     },
     {
-      "href": "/work",
-      "title": "Work"
+      "href": "https://github.com/mmmoustache",
+      "title": "Github",
+      "externalLink": true
     },
     {
-      "href": "/github",
-      "title": "Github"
-    },
-    {
-      "href": "/linkedin",
-      "title": "LinkedIn"
+      "href": "https://www.linkedin.com/in/jack-coventry-713a8811/",
+      "title": "LinkedIn",
+      "externalLink": true
     }
   ]
 }

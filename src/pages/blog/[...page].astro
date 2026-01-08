@@ -1,11 +1,14 @@
 ---
+import BlogTile from '@/components/BlogTile.astro';
+import TextSwap from '@/components/TextSwap.astro';
+import Layout from '@/layouts/Layout.astro';
 import type { GetStaticPaths, Page } from 'astro';
 import { getCollection, type CollectionEntry } from 'astro:content';
 type BlogEntry = CollectionEntry<'blog'>;
 
 export const getStaticPaths = (async ({ paginate }) => {
   const allPosts = await getCollection('blog');
-  const PAGE_SIZE = 10;
+  const PAGE_SIZE = 2;
   const posts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
   return paginate(posts, { pageSize: PAGE_SIZE });
@@ -14,40 +17,53 @@ export const getStaticPaths = (async ({ paginate }) => {
 const { page } = Astro.props as { page: Page<BlogEntry> };
 ---
 
-<!doctype html>
-<html>
-  <body>
-    <h1>Blog</h1>
-
-    <ul>
+<Layout>
+  <section class="grid grid-cols-1 items-center overflow-hidden bg-pink-100 px-8 py-8">
+    <div class="mx-auto p-7">
+      <h1 class="font-heading">
+        Blog<span class="text-sun-500 animate-pulse">.</span>
+      </h1>
+    </div>
+  </section>
+  <section class="p-7">
+    <ul class="mx-auto grid max-w-96 gap-4 xl:max-w-7xl xl:grid-cols-3">
       {
-        page.data.map((post) => (
-          <li>
-            <a href={`/blog/${post.id}/`}>{post.data.title}</a>
-            <time datetime={post.data.pubDate.toISOString()}>
-              {post.data.pubDate.toDateString()}
-            </time>
+        page.data?.map((item) => (
+          <li class="col-span-1">
+            <BlogTile
+              title={item.data.title}
+              text={item.data.description}
+              href={`/blog/${item.id}`}
+              image={item.data.listingImage?.src}
+            />
           </li>
         ))
       }
     </ul>
 
-    <nav aria-label="Pagination">
+    <nav
+      aria-label="Pagination"
+      class="font-sub-heading grid gap-5 p-7 pb-0 text-center lg:grid-cols-3"
+    >
       {
-        page.url.prev && (
+        page.url.prev ? (
           <a href={page.url.prev} rel="prev">
-            Newer
+            <TextSwap text="Newer" />
           </a>
+        ) : (
+          <span class="cursor-not-allowed text-gray-500">Newer</span>
         )
       }
-      <span>Page {page.currentPage} of {page.lastPage}</span>
+      <span class="block">Page {page.currentPage} of {page.lastPage}</span>
       {
-        page.url.next && (
-          <a href={page.url.next} rel="next">
-            Older
+        page.url.next ? (
+          <a href={page.url.next} rel="next" class="block">
+            <TextSwap text="Older" />
           </a>
+        ) : (
+          <span class="cursor-not-allowed text-gray-500">Older</span>
         )
       }
     </nav>
-  </body>
-</html>
+  </section>
+</Layout>
