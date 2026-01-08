@@ -17,6 +17,8 @@
     "tailwindcss": "^4.1.18"
   },
   "devDependencies": {
+    "@astrojs/rss": "^4.0.14",
+    "@astrojs/sitemap": "^3.6.1",
     "prettier": "^3.7.4",
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-organize-imports": "^4.3.0",
