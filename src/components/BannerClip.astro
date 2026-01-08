@@ -15,19 +15,19 @@ const {
 ---
 
 <figure
-  class={`reveal-zoom ${className}`}
-  data-reveal-zoom
+  class={`banner-clip ${className}`}
+  data-banner-clip
   data-initial-inset={initialInsetPct}
   data-initial-scale={initialScale}
   data-ease={ease}
 >
-  <div class="reveal-zoom__inner" style={`--inset: ${initialInsetPct}%; --scale: ${initialScale};`}>
+  <div class="banner-clip__inner" style={`--inset: ${initialInsetPct}%; --scale: ${initialScale};`}>
     <slot />
   </div>
 
   <noscript>
     <style>
-      .reveal-zoom__inner {
+      .banner-clip__inner {
         clip-path: none !important;
         transform: none !important;
       }
@@ -36,11 +36,11 @@ const {
 </figure>
 
 <style>
-  .reveal-zoom {
+  .banner-clip {
     width: 100%;
   }
 
-  .reveal-zoom__inner {
+  .banner-clip__inner {
     width: 100%;
     height: auto;
     clip-path: inset(var(--inset) var(--inset) var(--inset) var(--inset));
@@ -50,15 +50,15 @@ const {
     transform-origin: center center;
   }
 
-  .reveal-zoom :global(img),
-  .reveal-zoom :global(video) {
+  .banner-clip :global(img),
+  .banner-clip :global(video) {
     display: block;
     width: 100%;
     height: auto;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .reveal-zoom__inner {
+    .banner-clip__inner {
       clip-path: none !important;
       transform: none !important;
     }
@@ -72,13 +72,13 @@ const {
 
     const clamp = (n, min, max) => Math.min(max, Math.max(min, n));
 
-    const els = document.querySelectorAll('[data-reveal-zoom]');
+    const els = document.querySelectorAll('[data-banner-clip]');
     els.forEach((figure) => {
       if (!(figure instanceof HTMLElement)) return;
       if (figure.dataset.rzInit === 'true') return;
       figure.dataset.rzInit = 'true';
 
-      const inner = figure.querySelector('.reveal-zoom__inner');
+      const inner = figure.querySelector('.banner-clip__inner');
       if (!(inner instanceof HTMLElement)) return;
 
       const initialInset = Number(figure.getAttribute('data-initial-inset') || '30');
@@ -88,10 +88,8 @@ const {
 
       let currentInset = initialInset;
       let targetInset = initialInset;
-
       let currentScale = initialScale;
       let targetScale = initialScale;
-
       let raf = 0;
       let ticking = false;
 

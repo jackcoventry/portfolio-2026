@@ -1,6 +1,7 @@
 ---
 import type { BlogTileProps } from '@/components/BlogTile.astro';
 import BlogTile from '@/components/BlogTile.astro';
+import SwipeImage from '@/components/SwipeImage.astro';
 
 type Props = {
   title: string;
@@ -24,9 +25,11 @@ const { title, text, items } = Astro.props;
   {
     items.length > 0 ? (
       <ul class="mx-auto grid max-w-7xl gap-4 lg:grid-cols-3">
-        {items?.map((item) => (
+        {items?.map((item, index) => (
           <li class="col-span-1">
-            <BlogTile title={item.title} text={item.text} href={item.href} image={item.image} />
+            <SwipeImage threshold={0.3} delayMs={200 * index}>
+              <BlogTile title={item.title} text={item.text} href={item.href} image={item.image} />
+            </SwipeImage>
           </li>
         ))}
       </ul>
