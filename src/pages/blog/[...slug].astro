@@ -20,17 +20,26 @@ const { title, description, pubDate, heroImage } = post.data;
 <BlogPost>
   <BlogHero title={title} description={description} pubDate={pubDate} heroImage={heroImage} />
   <article class="grid grid-cols-4">
+    <section
+      class="body-text col-span-4 flex flex-col gap-6 px-6 py-9 lg:col-span-2 lg:col-start-2"
+    >
+      <Content />
+    </section>
     <aside class="col-span-4 lg:col-span-1">
-      <nav class="top-0 p-6 lg:sticky" aria-label="Contents">
-        <details>
-          <summary><h2 class="font-sub-heading">Contents</h2></summary>
-          <ul>
+      <nav class="top-0 px-6 py-9 lg:sticky" aria-label="Contents">
+        <details class="flex flex-col gap-2 border-1 border-amber-200 p-5">
+          <summary class="relative flex cursor-pointer items-center justify-between"
+            ><h2 class="font-sub-heading">Contents</h2></summary
+          >
+          <ul class="flex max-h-96 flex-col gap-2 overflow-auto" data-lenis-prevent>
             {
               headings
                 .filter((h) => h.depth === 2 || h.depth === 3)
                 .map((h) => (
                   <li class={`depth-${h.depth}`}>
-                    <a href={`#${h.slug}`}>{h.text}</a>
+                    <a href={`#${h.slug}`} class="font-body">
+                      {h.text}
+                    </a>
                   </li>
                 ))
             }
@@ -38,8 +47,25 @@ const { title, description, pubDate, heroImage } = post.data;
         </details>
       </nav>
     </aside>
-    <section class="body-text col-span-4 flex flex-col gap-6 px-6 py-9 lg:col-span-2">
-      <Content />
-    </section>
   </article>
 </BlogPost>
+
+<style is:inline>
+  details summary::after {
+    border: solid var(--color-black);
+    border-width: 0 3px 3px 0;
+    content: '';
+    display: inline-block;
+    height: 10px;
+    padding: var(--spacing-1);
+    position: absolute;
+    right: 0;
+    transition: 0.25s;
+    transform: rotate(45deg);
+    width: 10px;
+  }
+
+  details[open] summary::after {
+    transform: rotate(-135deg);
+  }
+</style>
