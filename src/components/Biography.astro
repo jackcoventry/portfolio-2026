@@ -16,8 +16,6 @@ type Props = {
 };
 
 const { title, text, tools } = Astro.props;
-const toolsRow1 = tools.slice(0, 4);
-const toolsRow2 = tools.slice(4, 8);
 ---
 
 <section class="-mt-10 overflow-hidden">
@@ -29,7 +27,7 @@ const toolsRow2 = tools.slice(4, 8);
 </section>
 
 <section class="-mt-10 min-h-dvh bg-neutral-50">
-  <div class="mx-auto p-7">
+  <div class="mx-auto px-5 py-7">
     <div class="my-10 grid grid-cols-1 gap-8 lg:grid-cols-3">
       <div class="col-span-1 lg:col-span-2">
         <h1 class="font-heading">
@@ -37,8 +35,7 @@ const toolsRow2 = tools.slice(4, 8);
         </h1>
         <p set:html={text} class="font-title pt-6 text-left" />
         <div class="flex flex-col gap-5 py-8">
-          <LogoBlock items={toolsRow1} />
-          <LogoBlock items={toolsRow2} />
+          <LogoBlock items={tools} />
         </div>
       </div>
       <div class="col-span-1 lg:col-span-1">

@@ -10,13 +10,13 @@ type NavItem = {
 const { items = [] } = Astro.props;
 ---
 
-<header id="header" class="header | absolute z-10 w-full max-lg:flex">
-  <span class="font-body z-20 block px-7 py-5 lg:hidden">Jack Coventry</span>
+<header id="header" class="header | absolute z-30 w-full max-lg:flex">
+  <span class="font-body z-40 block p-5 lg:hidden lg:px-7">Jack Coventry</span>
 
   <button
     id="navigationToggle"
     type="button"
-    class="z-20 ml-auto block cursor-pointer px-7 py-5 lg:hidden"
+    class="font-body z-40 ml-auto block cursor-pointer p-5 lg:hidden lg:px-7"
     aria-controls="navigation"
     aria-expanded="false"
   >
@@ -25,12 +25,15 @@ const { items = [] } = Astro.props;
 
   <nav
     id="navigation"
-    class="hidden max-lg:fixed max-lg:top-0 max-lg:left-0 max-lg:z-10 max-lg:h-dvh max-lg:w-dvw max-lg:items-center max-lg:justify-center max-lg:bg-amber-300 lg:block lg:pt-0"
+    class="hidden max-lg:fixed max-lg:top-0 max-lg:left-0 max-lg:z-30 max-lg:h-dvh max-lg:w-dvw max-lg:items-center max-lg:justify-center max-lg:bg-amber-300 lg:block lg:pt-0"
     aria-label="Primary"
   >
     {
       items?.length > 0 ? (
-        <ul class="font-body flex justify-between max-lg:max-h-full max-lg:w-full max-lg:flex-col max-lg:items-center max-lg:overflow-auto max-lg:text-center">
+        <ul
+          class="font-body flex justify-between max-lg:max-h-full max-lg:w-full max-lg:flex-col max-lg:items-center max-lg:overflow-auto max-lg:text-center"
+          data-lenis-prevent
+        >
           <a href="/" class="px-7 py-5 max-lg:hidden">
             Jack Coventry
           </a>
@@ -84,28 +87,35 @@ const { items = [] } = Astro.props;
   let releaseTrap: (() => void) | null = null;
   let previousBodyOverflow = '';
 
+  const lgMq = window.matchMedia('(min-width: 64rem)');
+  let isLg = lgMq.matches;
+
+  function stopLenis() {
+    window.__lenis?.stop?.();
+  }
+
+  function startLenis() {
+    window.__lenis?.start?.();
+  }
+
   function setUI(open: boolean) {
     if (!toggle || !navEl) return;
 
     if (open) {
       previousBodyOverflow = document.body.style.overflow;
-      document.body.style.overflow = 'hidden';
-      document.body.style.height = '100dvh';
+
+      document.body.classList.add('max-lg:overflow-hidden', 'max-lg:h-dvh');
       navEl.classList.add('navigation-offset', 'flex');
       navEl.classList.remove('hidden');
 
-      if (window.__lenis) {
-        window.__lenis?.stop();
-      }
+      stopLenis();
     } else {
       document.body.style.overflow = previousBodyOverflow || '';
-      document.body.style.height = 'unset';
+      document.body.classList.remove('max-lg:overflow-hidden', 'max-lg:h-dvh');
       navEl.classList.remove('navigation-offset', 'flex');
       navEl.classList.add('hidden');
 
-      if (window.__lenis) {
-        window.__lenis?.start();
-      }
+      startLenis();
     }
 
     toggle.textContent = open ? 'Close' : 'Menu';
@@ -129,19 +139,45 @@ const { items = [] } = Astro.props;
     releaseTrap = null;
   }
 
+  function handleBreakpointChange(e: { matches: any }) {
+    const nextIsLg = e.matches;
+
+    if (nextIsLg && !isLg) {
+      navigationOpen.set(false);
+      closeNav();
+      startLenis();
+    }
+
+    if (!nextIsLg && isLg) {
+      if (navigationOpen.get?.() === true) stopLenis();
+    }
+
+    isLg = nextIsLg;
+  }
+
   if (toggle && navEl) {
     setUI(navigationOpen.get());
 
     const unsubscribe = navigationOpen.subscribe((open) => {
+      if (lgMq.matches) {
+        if (open) navigationOpen.set(false);
+        return;
+      }
+
       if (open) openNav();
       else closeNav();
     });
 
-    toggle.addEventListener('click', navigationToggle);
+    toggle.addEventListener('click', () => {
+      if (!lgMq.matches) navigationToggle();
+    });
+
+    lgMq.addEventListener('change', handleBreakpointChange);
 
     const cleanup = () => {
       closeNav();
       unsubscribe?.();
+      lgMq.removeEventListener('change', handleBreakpointChange);
       toggle.removeEventListener('click', navigationToggle);
     };
 

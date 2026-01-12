@@ -4,10 +4,10 @@ import type { Tool } from '@/components/Biography.astro';
 const { items } = Astro.props;
 ---
 
-<ul class="flex w-full justify-between gap-6">
+<ul class="grid w-full grid-cols-2 justify-between gap-6 sm:grid-cols-4">
   {
     items?.map((tool: Tool) => (
-      <li class="col-span-1 flex w-[150px] flex-col gap-3">
+      <li class="col-span-1 mx-auto flex max-w-37.5 flex-col gap-3 sm:mx-0">
         <figure>
           <img
             src={`src/assets/logos/${tool.id}.svg`}

@@ -15,46 +15,33 @@ const {
 ---
 
 <figure
-  class={`banner-clip ${className}`}
+  class={`banner-clip | w-full | ${className}`}
   data-banner-clip
   data-initial-inset={initialInsetPct}
   data-initial-scale={initialScale}
   data-ease={ease}
 >
-  <div class="banner-clip__inner" style={`--inset: ${initialInsetPct}%; --scale: ${initialScale};`}>
+  <div
+    class="banner-clip__inner | h-auto w-full overflow-hidden"
+    style={`--inset: ${initialInsetPct}%; --scale: ${initialScale};`}
+  >
     <slot />
   </div>
-
-  <noscript>
-    <style>
-      .banner-clip__inner {
-        clip-path: none !important;
-        transform: none !important;
-      }
-    </style>
-  </noscript>
 </figure>
 
 <style>
-  .banner-clip {
-    width: 100%;
-  }
-
   .banner-clip__inner {
-    width: 100%;
-    height: auto;
     clip-path: inset(var(--inset) var(--inset) var(--inset) var(--inset));
-    overflow: hidden;
-    will-change: clip-path, transform;
     transform: scale(var(--scale));
     transform-origin: center center;
+    will-change: clip-path, transform;
   }
 
   .banner-clip :global(img),
   .banner-clip :global(video) {
     display: block;
-    width: 100%;
     height: auto;
+    width: 100%;
   }
 
   @media (prefers-reduced-motion: reduce) {
