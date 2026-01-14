@@ -1,5 +1,6 @@
 ---
 import TextSwap from '@/components/TextSwap.astro';
+import { SITE_AUTHOR } from '@/consts/consts';
 
 type NavItem = {
   href: string;
@@ -11,7 +12,7 @@ const { items = [] } = Astro.props;
 ---
 
 <header id="header" class="header | absolute z-30 w-full max-lg:flex">
-  <span class="font-body z-40 block p-5 lg:hidden lg:px-7">Jack Coventry</span>
+  <span class="font-body z-40 block p-5 lg:hidden lg:px-7">{SITE_AUTHOR}</span>
 
   <button
     id="navigationToggle"
@@ -31,11 +32,12 @@ const { items = [] } = Astro.props;
     {
       items?.length > 0 ? (
         <ul
-          class="font-body flex justify-between max-lg:max-h-full max-lg:w-full max-lg:flex-col max-lg:items-center max-lg:overflow-auto max-lg:text-center"
+          class="font-body flex justify-between max-lg:max-h-full max-lg:w-full max-lg:flex-col max-lg:items-center max-lg:overflow-auto max-lg:text-center max-lg:opacity-0"
           data-lenis-prevent
+          id="navigationItems"
         >
           <a href="/" class="px-7 py-5 max-lg:hidden">
-            Jack Coventry
+            {SITE_AUTHOR}
           </a>
           {items.map((item: NavItem) => {
             const openInNewTab = Boolean(item?.externalLink);
@@ -82,6 +84,7 @@ const { items = [] } = Astro.props;
 
   const toggle = document.getElementById('navigationToggle');
   const navEl = document.getElementById('navigation');
+  const navItemsEl = document.getElementById('navigationItems');
   const header = document.getElementById('header');
 
   let releaseTrap: (() => void) | null = null;
@@ -105,14 +108,20 @@ const { items = [] } = Astro.props;
       previousBodyOverflow = document.body.style.overflow;
 
       document.body.classList.add('max-lg:overflow-hidden', 'max-lg:h-dvh');
-      navEl.classList.add('navigation-offset', 'flex');
+      navEl.classList.add('navigation-offset', 'flex', 'motion-safe:animate-fade-in');
       navEl.classList.remove('hidden');
+
+      setTimeout(() => {
+        navItemsEl?.classList.add('motion-safe:animate-shift-up');
+      }, 250);
 
       stopLenis();
     } else {
       document.body.style.overflow = previousBodyOverflow || '';
       document.body.classList.remove('max-lg:overflow-hidden', 'max-lg:h-dvh');
-      navEl.classList.remove('navigation-offset', 'flex');
+      navEl.classList.remove('navigation-offset', 'flex', 'motion-safe:animate-fade-in');
+      navItemsEl?.classList.remove('motion-safe:animate-shift-up');
+
       navEl.classList.add('hidden');
 
       startLenis();

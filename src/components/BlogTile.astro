@@ -30,8 +30,9 @@ const hasImage = Boolean(image);
     href ? (
       <a
         href={href}
-        class="relative z-20 flex h-125 cursor-pointer flex-col gap-3 p-5"
+        class="blog-tile-link relative z-20 flex h-125 cursor-pointer flex-col gap-3 p-5"
         aria-label={`Read more: ${title}`}
+        tabindex="0"
       >
         {title && <h3 class="font-sub-heading">{title}</h3>}
         {text && <p class="font-body">{text}</p>}
@@ -79,9 +80,13 @@ const hasImage = Boolean(image);
     background: rgba(0, 0, 0, 0.6);
   }
 
-  .blog-tile a:focus-visible {
-    outline: 2px solid currentColor;
-    outline-offset: 4px;
+  .blog-tile-link {
+    box-shadow: 0 0 0 0 inset var(--color-red-500);
+    transition: box-shadow ease-in-out 0.25s;
+  }
+
+  .blog-tile-link:focus-visible {
+    box-shadow: 0 0 0 10px inset var(--color-red-500);
   }
 
   @media (prefers-reduced-motion: reduce) {
