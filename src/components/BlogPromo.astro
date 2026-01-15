@@ -1,8 +1,10 @@
 ---
+import { getCollection } from 'astro:content';
+
 import BlogTile from '@/components/BlogTile.astro';
 import SwipeImage from '@/components/SwipeImage.astro';
-import { getCollection } from 'astro:content';
-import BannerClip from './BannerClip.astro';
+import BannerClip from '@/components/BannerClip/BannerClip.astro';
+
 import bannerImage from '@/assets/skyline.webp';
 
 type Props = {

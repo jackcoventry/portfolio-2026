@@ -1,0 +1,58 @@
+---
+export type Props = {
+  class?: string;
+  ease?: number;
+  initialInsetPct?: number;
+  initialScale?: number;
+};
+
+const {
+  class: className = '',
+  ease = 0.12,
+  initialInsetPct = 30,
+  initialScale = 1.15,
+} = Astro.props;
+---
+
+<figure
+  class={`banner-clip | w-full | ${className}`}
+  data-banner-clip
+  data-initial-inset={initialInsetPct}
+  data-initial-scale={initialScale}
+  data-ease={ease}
+>
+  <div
+    class="banner-clip__inner | h-auto w-full overflow-hidden"
+    style={`--inset: ${initialInsetPct}%; --scale: ${initialScale};`}
+  >
+    <slot />
+  </div>
+</figure>
+
+<style>
+  .banner-clip__inner {
+    clip-path: inset(var(--inset) var(--inset) var(--inset) var(--inset));
+    transform: scale(var(--scale));
+    transform-origin: center center;
+    will-change: clip-path, transform;
+  }
+
+  .banner-clip :global(img),
+  .banner-clip :global(video) {
+    display: block;
+    height: auto;
+    width: 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .banner-clip__inner {
+      clip-path: none !important;
+      transform: none !important;
+    }
+  }
+</style>
+
+<script>
+  import { BannerClip } from '@/components/BannerClip/BannerClip';
+  BannerClip();
+</script>

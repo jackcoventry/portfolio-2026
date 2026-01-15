@@ -1,0 +1,169 @@
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { BannerClip } from '@/components/BannerClip/BannerClip';
+
+function setMatchMedia(matches: boolean) {
+  const matchMedia = vi.fn().mockImplementation((query: string) => {
+    return {
+      media: query,
+      matches,
+      onchange: null,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    } as unknown as MediaQueryList;
+  });
+
+  Object.defineProperty(globalThis, 'matchMedia', {
+    configurable: true,
+    value: matchMedia,
+  });
+
+  return matchMedia;
+}
+
+describe('BannerClip', () => {
+  let rafSpy: ReturnType<typeof vi.fn>;
+
+  beforeEach(() => {
+    document.body.innerHTML = '';
+
+    Object.defineProperty(globalThis, 'innerHeight', {
+      configurable: true,
+      value: 1000,
+      writable: true,
+    });
+
+    rafSpy = vi.fn((cb: FrameRequestCallback) => {
+      cb(0);
+      return 1;
+    });
+
+    vi.stubGlobal('requestAnimationFrame', rafSpy);
+    vi.stubGlobal('cancelAnimationFrame', vi.fn());
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+    vi.restoreAllMocks();
+  });
+
+  it('does nothing when prefers-reduced-motion is enabled', () => {
+    setMatchMedia(true);
+
+    document.body.innerHTML = `
+      <figure data-banner-clip data-initial-inset="30" data-initial-scale="1.15">
+        <div class="banner-clip__inner"></div>
+      </figure>
+    `;
+
+    BannerClip();
+
+    const figure = document.querySelector('figure') as HTMLElement;
+    const inner = document.querySelector('.banner-clip__inner') as HTMLElement;
+
+    expect(figure.dataset.rzInit).toBeUndefined();
+    expect(inner.style.getPropertyValue('--inset')).toBe('');
+    expect(inner.style.getPropertyValue('--scale')).toBe('');
+    expect(rafSpy).not.toHaveBeenCalled();
+  });
+
+  it('initialises once per element and sets CSS vars on first run', () => {
+    setMatchMedia(false);
+
+    document.body.innerHTML = `
+      <figure
+        data-banner-clip
+        data-initial-inset="30"
+        data-initial-scale="1.15"
+        data-ease="0.25"
+      >
+        <div class="banner-clip__inner"></div>
+      </figure>
+    `;
+
+    const figure = document.querySelector('figure') as HTMLElement;
+    const inner = document.querySelector('.banner-clip__inner') as HTMLElement;
+
+    vi.spyOn(figure, 'getBoundingClientRect').mockReturnValue({
+      top: 1000,
+      height: 200,
+      bottom: 1200,
+      left: 0,
+      right: 0,
+      width: 0,
+      x: 0,
+      y: 0,
+      toJSON() {},
+    } as DOMRect);
+
+    BannerClip();
+
+    expect(figure.dataset.rzInit).toBe('true');
+    expect(inner.style.getPropertyValue('--inset')).toBe('30.000%');
+    expect(inner.style.getPropertyValue('--scale')).toBe('1.1500');
+
+    const rafCallsAfterFirstInit = rafSpy.mock.calls.length;
+
+    BannerClip();
+
+    expect(rafSpy.mock.calls.length).toBe(rafCallsAfterFirstInit);
+  });
+
+  it('updates CSS vars on scroll (progress changes)', () => {
+    setMatchMedia(false);
+
+    document.body.innerHTML = `
+      <figure
+        data-banner-clip
+        data-initial-inset="30"
+        data-initial-scale="1.15"
+        data-ease="0.25"
+      >
+        <div class="banner-clip__inner"></div>
+      </figure>
+    `;
+
+    const figure = document.querySelector('figure') as HTMLElement;
+    const inner = document.querySelector('.banner-clip__inner') as HTMLElement;
+
+    const rectSpy = vi.spyOn(figure, 'getBoundingClientRect').mockReturnValue({
+      top: 1000,
+      height: 200,
+      bottom: 1200,
+      left: 0,
+      right: 0,
+      width: 0,
+      x: 0,
+      y: 0,
+      toJSON() {},
+    } as DOMRect);
+
+    BannerClip();
+
+    expect(inner.style.getPropertyValue('--inset')).toBe('30.000%');
+    expect(inner.style.getPropertyValue('--scale')).toBe('1.1500');
+
+    rectSpy.mockReturnValue({
+      top: 0,
+      height: 200,
+      bottom: 200,
+      left: 0,
+      right: 0,
+      width: 0,
+      x: 0,
+      y: 0,
+      toJSON() {},
+    } as DOMRect);
+
+    globalThis.dispatchEvent(new Event('scroll'));
+
+    const inset = inner.style.getPropertyValue('--inset');
+    const scale = inner.style.getPropertyValue('--scale');
+
+    expect(Number.parseFloat(inset)).toBeLessThan(30);
+    expect(Number.parseFloat(scale)).toBeLessThan(1.15);
+    expect(Number.parseFloat(scale)).toBeGreaterThanOrEqual(1);
+  });
+});
