@@ -1,9 +1,12 @@
 ---
-import BlogTile from '@/components/BlogTile.astro';
-import TextSwap from '@/components/TextSwap.astro';
-import Layout from '@/layouts/Layout.astro';
 import type { GetStaticPaths, Page } from 'astro';
 import { getCollection, type CollectionEntry } from 'astro:content';
+
+import BlogTile from '@/components/BlogTile/BlogTile.astro';
+import TextSwap from '@/components/TextSwap/TextSwap.astro';
+
+import Layout from '@/layouts/Layout.astro';
+
 type BlogEntry = CollectionEntry<'blog'>;
 
 export const getStaticPaths = (async ({ paginate }) => {

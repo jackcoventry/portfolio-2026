@@ -1,9 +1,13 @@
 ---
-import TextSwap from '@/components/TextSwap.astro';
+import TextSwap from '@/components/TextSwap/TextSwap.astro';
 
 type NavItem = {
   href: string;
   title: string;
+};
+
+type Props = {
+  items: NavItem[];
 };
 
 const date = new Date().getFullYear();
@@ -42,4 +46,3 @@ const { items = [] } = Astro.props;
     </nav>
   </div>
 </footer>
-<style></style>

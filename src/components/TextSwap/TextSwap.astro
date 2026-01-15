@@ -1,17 +1,11 @@
 ---
+import { splitGraphemes } from '@/utils/splitGraphemes';
+
 export interface Props {
   as?: keyof HTMLElementTagNameMap;
   class?: string;
   staggerMs?: number;
   text: string;
-}
-
-function splitGraphemes(input: string): string[] {
-  if (typeof Intl !== 'undefined' && 'Segmenter' in Intl) {
-    const seg = new Intl.Segmenter(undefined, { granularity: 'grapheme' });
-    return Array.from(seg.segment(input), (s) => s.segment);
-  }
-  return Array.from(input);
 }
 
 const { text, as = 'span', class: className = '', staggerMs = 35 } = Astro.props;

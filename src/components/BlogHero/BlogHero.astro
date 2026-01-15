@@ -1,6 +1,14 @@
 ---
 import ShareButton from '@/components/ShareButton.astro';
-const { title, description, pubDate, duration = 1 } = Astro.props;
+
+type Props = {
+  duration: number;
+  pubDate: Date;
+  title: string;
+};
+
+const { title, pubDate, duration = 1 } = Astro.props;
+
 const date = new Date(pubDate).toLocaleDateString('en-GB');
 const canonicalURL = new URL(Astro.url.pathname, Astro.site).toString();
 ---

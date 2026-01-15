@@ -1,5 +1,9 @@
 ---
-import type { Tool } from '@/components/Biography.astro';
+import type { Tool } from '@/components/Biography/Biography.astro';
+
+type Props = {
+  items: Tool[];
+};
 
 const { items } = Astro.props;
 ---
@@ -12,7 +16,7 @@ const { items } = Astro.props;
           <img
             src={`src/assets/logos/${tool.id}.svg`}
             alt={`Logo of ${tool.name}`}
-            class="mx-auto h-[50px] w-[50px]"
+            class="mx-auto h-12.5"
           />
         </figure>
         <span class="font-body block w-full text-center">{tool.name}</span>

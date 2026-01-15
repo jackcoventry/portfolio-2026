@@ -1,6 +1,12 @@
 ---
-import WorkTile from './WorkTile.astro';
-import type { Props as WorkTileProps } from '@/components/WorkTile.astro';
+import WorkTile from '@/components/WorkTile/WorkTile.astro';
+import type { Props as WorkTileProps } from '@/components/WorkTile/WorkTile.astro';
+
+type Props = {
+  items: WorkTileProps[];
+  text: string;
+  title: string;
+};
 
 const { title, text, items } = Astro.props;
 ---

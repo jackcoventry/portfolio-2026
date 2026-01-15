@@ -1,11 +1,11 @@
 ---
-import TextSwap from './TextSwap.astro';
+import TextSwap from '@/components/TextSwap/TextSwap.astro';
 
 export type BlogTileProps = {
-  title: string;
-  text: string;
   href: string;
   image?: string;
+  text: string;
+  title: string;
 };
 
 const { title, text, href, image } = Astro.props;
@@ -37,7 +37,7 @@ const hasImage = Boolean(image);
         {title && <h3 class="font-sub-heading">{title}</h3>}
         {text && <p class="font-body">{text}</p>}
 
-        <span class="font-sub-heading mt-auto text-right">
+        <span class="font-title mt-auto text-right">
           <TextSwap text="Read more" />
         </span>
       </a>

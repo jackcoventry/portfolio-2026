@@ -1,8 +1,9 @@
 ---
-import LogoBlock from '@/components/LogoBlock.astro';
 import BannerClip from '@/components/BannerClip/BannerClip.astro';
+import LogoBlock from '@/components/LogoBlock/LogoBlock.astro';
 import SwipeImage from '@/components/SwipeImage.astro';
-import bannerImage from '@/assets/ocean.webp';
+
+import BannerImage from '@/assets/ocean.webp';
 
 export type Tool = {
   id: string;
@@ -10,8 +11,8 @@ export type Tool = {
 };
 
 type Props = {
-  title: string;
   text?: string;
+  title: string;
   tools: Array<Tool>;
 };
 
@@ -21,7 +22,12 @@ const { title, text, tools } = Astro.props;
 <section class="-mt-9 overflow-hidden">
   <div class="mx-auto flex max-w-6xl">
     <BannerClip initialInsetPct={20} initialScale={1.5}>
-      <img src={bannerImage.src} alt="A description of the image" loading="lazy" decoding="async" />
+      <img
+        src={BannerImage.src}
+        alt="A landscape photography of an ocean on a sunny day"
+        loading="lazy"
+        decoding="async"
+      />
     </BannerClip>
   </div>
 </section>
