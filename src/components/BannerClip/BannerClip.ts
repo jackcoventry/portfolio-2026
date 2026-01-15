@@ -1,3 +1,5 @@
+import { clamp } from '@/utils/clamp';
+
 type BannerClipDataset = {
   ease?: string;
   initialInset?: string;
@@ -8,8 +10,6 @@ type BannerClipDataset = {
 type BannerClipEl = HTMLElement & {
   dataset: DOMStringMap & BannerClipDataset;
 };
-
-const clamp = (n: number, min: number, max: number) => Math.min(max, Math.max(min, n));
 
 function prefersReducedMotion(): boolean {
   return Boolean(globalThis.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches);

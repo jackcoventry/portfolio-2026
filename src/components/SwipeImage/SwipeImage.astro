@@ -1,0 +1,72 @@
+---
+export type Props = {
+  aspectRatio?: string;
+  class?: string;
+  delayMs?: number;
+  durationMs?: number;
+  easing?: string;
+  threshold?: number;
+};
+
+const {
+  aspectRatio,
+  class: className = '',
+  delayMs = 0,
+  durationMs = 1100,
+  easing = 'cubic-bezier(0.12, 1, 0.24, 1)',
+  threshold = 0.25,
+} = Astro.props;
+---
+
+<div
+  class={`swipe-image ${className}`}
+  data-swipe-image
+  data-threshold={threshold}
+  style={`--dur:${durationMs}ms; --delay:${delayMs}ms; --ease:${easing}; ${aspectRatio ? `--ar:${aspectRatio};` : ''}`}
+>
+  <div class="swipe-image__content">
+    <slot />
+  </div>
+</div>
+
+<style>
+  .swipe-image {
+    aspect-ratio: var(--ar);
+  }
+
+  .swipe-image__content {
+    clip-path: inset(0 100% 0 0);
+    filter: blur(1px);
+    transform: translateX(-1.5%) scale(1.02);
+    will-change: clip-path, transform, filter;
+  }
+
+  .swipe-image[data-revealed='true'] .swipe-image__content {
+    clip-path: inset(0 0 0 0);
+    filter: blur(0);
+    transform: translateX(0) scale(1);
+    transition:
+      clip-path var(--dur) var(--ease) var(--delay),
+      transform calc(var(--dur) + 180ms) cubic-bezier(0.12, 0.95, 0.18, 1) var(--delay),
+      filter calc(var(--dur) + 180ms) cubic-bezier(0.12, 0.95, 0.18, 1) var(--delay);
+  }
+
+  .swipe-image[data-resetting='true'] .swipe-image__content {
+    transition: none !important;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .swipe-image__content {
+      filter: none;
+      transform: none;
+    }
+    .swipe-image[data-revealed='true'] .swipe-image__content {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  import { SwipeImage } from '@/components/SwipeImage/SwipeImage';
+  SwipeImage();
+</script>
