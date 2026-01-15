@@ -1,0 +1,85 @@
+---
+import TextSwap from '@/components/TextSwap/TextSwap.astro';
+import { SITE_AUTHOR } from '@/consts/consts';
+
+type NavItem = {
+  externalLink: boolean;
+  href: string;
+  title: string;
+};
+
+const { items = [] } = Astro.props;
+---
+
+<header id="header" class="header | absolute z-30 w-full max-lg:flex">
+  <a href="/" class="font-body z-40 block p-5 lg:hidden lg:px-7">{SITE_AUTHOR}</a>
+
+  <button
+    id="navigationToggle"
+    type="button"
+    class="font-body z-40 ml-auto block cursor-pointer p-5 lg:hidden lg:px-7"
+    aria-controls="navigation"
+    aria-expanded="false"
+  >
+    Menu
+  </button>
+
+  <nav
+    id="navigation"
+    class="hidden max-lg:fixed max-lg:top-0 max-lg:left-0 max-lg:z-30 max-lg:h-dvh max-lg:w-dvw max-lg:items-center max-lg:justify-center max-lg:bg-amber-300 lg:block lg:pt-0"
+    aria-label="Primary"
+  >
+    {
+      items?.length > 0 ? (
+        <ul
+          class="font-body flex justify-between max-lg:max-h-full max-lg:w-full max-lg:flex-col max-lg:items-center max-lg:overflow-auto max-lg:text-center max-lg:opacity-0"
+          data-lenis-prevent
+          id="navigationItems"
+        >
+          <a href="/" class="px-7 py-5 max-lg:hidden">
+            {SITE_AUTHOR}
+          </a>
+          {items.map((item: NavItem) => {
+            const openInNewTab = Boolean(item?.externalLink);
+            const attributes = {
+              href: item.href,
+              ...(openInNewTab
+                ? {
+                    target: '_blank',
+                    rel: 'noopener noreferrer',
+                  }
+                : null),
+            };
+            return (
+              <li>
+                <a {...attributes} class="max-lg:font-heading block">
+                  <TextSwap text={item.title} class="flex px-7 py-5" />
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      ) : null
+    }
+  </nav>
+</header>
+
+<style>
+  .header {
+    height: var(--navigation-height);
+  }
+
+  .navigation-offset {
+    padding-top: var(--navigation-height);
+
+    @media (width >= 64rem) {
+      padding-top: 0;
+    }
+  }
+</style>
+
+<script>
+  import { initNavigationMenu } from '@/components/MainNavigation/MainNavigation';
+
+  initNavigationMenu();
+</script>
