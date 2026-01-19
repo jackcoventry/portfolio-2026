@@ -3,7 +3,7 @@ import BannerClip from '@/components/BannerClip/BannerClip.astro';
 import LogoBlock from '@/components/LogoBlock/LogoBlock.astro';
 import SwipeImage from '@/components/SwipeImage/SwipeImage.astro';
 
-import BannerImage from '@/assets/ocean.webp';
+import BannerImage from '@/assets/ocean/1920.webp';
 
 export type Tool = {
   id: string;
@@ -24,7 +24,15 @@ const { title, text, tools } = Astro.props;
     <BannerClip initialInsetPct={20} initialScale={1.5}>
       <img
         src={BannerImage.src}
+        srcset={`
+          ${BannerImage.src} 1024w,
+          ${BannerImage.src}  1440w,
+          ${BannerImage.src}  1920w
+        `}
+        sizes="(min-width: 1024px) 50vw, 100vw"
         alt="A landscape photography of an ocean on a sunny day"
+        width="1024"
+        height="512"
         loading="lazy"
         decoding="async"
       />
