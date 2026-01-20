@@ -2,7 +2,7 @@
 title: 'AI in web development: there and back again'
 description: ''
 pubDate: 'November 19 2024'
-listingImage: '../../assets/trees.webp'
+listingImage: '../../assets/trees/large.webp'
 duration: 5
 ---
 
@@ -46,4 +46,4 @@ AI can be helpful to troubleshoot an issue or perform a monotonous task. It can 
 
 ## Conclusion
 
-Even if the moral view point of not using it to save jobs and human creativity stands up, is it actually worth it? If you're using it for a client, do they even know the work they're paying you for is just feeding the infernal plagiarism machine? After getting into the hype and leaving with a sense of unease, I think AI can be used to set us up to do our job more efficiently, but it cannot do our job.
+Even if the moral view point of not using it to save jobs and human creativity stands up, is it actually worth it? If you're using it for a client, do they even know the work they're paying you for is just feeding the infernal plagiarism machine? After getting into the hype and leaving with a sense of unease, I think AI can be used to set us up to do our job more efficiently, but it cannot do our job. Do any developers who enjoy their work also enjoy using AI? Shouldn't the people that use the tech dictate the conversation on this?
