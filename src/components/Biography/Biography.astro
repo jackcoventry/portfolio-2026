@@ -2,8 +2,10 @@
 import BannerClip from '@/components/BannerClip/BannerClip.astro';
 import LogoBlock from '@/components/LogoBlock/LogoBlock.astro';
 import SwipeImage from '@/components/SwipeImage/SwipeImage.astro';
+import Dot from '@/components/Dot/Dot.astro';
 
 import BannerImage from '@/assets/ocean/large.webp';
+import Portrait from '@/assets/me.webp';
 
 export type Tool = {
   id: string;
@@ -45,7 +47,7 @@ const { title, text, tools } = Astro.props;
     <div class="my-10 grid grid-cols-1 gap-8 lg:grid-cols-3">
       <div class="col-span-1 lg:col-span-2">
         <h1 class="font-heading">
-          {title}<span class="text-amber-300">.</span>
+          {title}<Dot />
         </h1>
         <p set:html={text} class="font-title pt-6 text-left" />
         <div class="flex flex-col gap-5 py-8">
@@ -54,7 +56,7 @@ const { title, text, tools } = Astro.props;
       </div>
       <div class="col-span-1 lg:col-span-1">
         <SwipeImage threshold={0.25}>
-          <img src="/src/assets/me.webp" alt="Misty mountain" />
+          <img src={Portrait.src} alt="A portrait of Jack Coventry holding a cute koala bear" />
         </SwipeImage>
       </div>
     </div>

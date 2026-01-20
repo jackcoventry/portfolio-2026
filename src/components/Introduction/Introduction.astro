@@ -1,4 +1,6 @@
 ---
+import Dot from '@/components/Dot/Dot.astro';
+
 type Props = {
   title: string;
 };
@@ -11,7 +13,7 @@ const { title } = Astro.props;
 >
   <div class="mx-auto px-5 py-7 lg:p-7">
     <h1 class="font-heading">
-      {title}<span class="text-sun-500 animate-pulse">.</span>
+      {title}<Dot />
     </h1>
   </div>
 </section>

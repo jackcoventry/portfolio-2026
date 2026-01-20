@@ -1,6 +1,7 @@
 ---
 import WorkTile from '@/components/WorkTile/WorkTile.astro';
 import type { Props as WorkTileProps } from '@/components/WorkTile/WorkTile.astro';
+import Dot from '@/components/Dot/Dot.astro';
 
 type Props = {
   items: WorkTileProps[];
@@ -16,7 +17,7 @@ const { title, text, items } = Astro.props;
     <div class="my-10 grid grid-cols-1 gap-8 lg:grid-cols-3">
       <div class="col-span-1 lg:col-span-1">
         <h1 class="font-heading">
-          {title}<span class="text-amber-300">.</span>
+          {title}<Dot />
         </h1>
         <p set:html={text} class="font-title pt-6 text-left" />
       </div>

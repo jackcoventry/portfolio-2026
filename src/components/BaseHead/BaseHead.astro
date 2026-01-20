@@ -1,7 +1,7 @@
 ---
 import '@/styles/global.css';
 import type { ImageMetadata } from 'astro';
-import FallbackImage from '@/assets/ocean/1024.webp';
+import FallbackImage from '@/assets/ocean/large.webp';
 import { SITE_TITLE } from '@/consts/consts';
 
 type Props = {
@@ -25,13 +25,6 @@ const { title, description, image = FallbackImage } = Astro.props;
   href={new URL('rss.xml', Astro.site)}
 />
 <meta name="generator" content={Astro.generator} />
-
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link
-  href="https://fonts.googleapis.com/css2?family=Forum&family=Outfit:wght@100..900&display=swap"
-  rel="stylesheet"
-/>
 
 <link rel="canonical" href={canonicalURL} />
 

@@ -4,6 +4,7 @@ import { getCollection } from 'astro:content';
 import BlogTile from '@/components/BlogTile/BlogTile.astro';
 import SwipeImage from '@/components/SwipeImage/SwipeImage.astro';
 import BannerClip from '@/components/BannerClip/BannerClip.astro';
+import Dot from '@/components/Dot/Dot.astro';
 
 import bannerImage from '@/assets/skyline.webp';
 
@@ -30,9 +31,9 @@ const { title, text } = Astro.props;
 <section class="flex flex-col gap-6 p-7 pt-9">
   {
     title && (
-      <h1 class="font-heading flex justify-center text-amber-300">
+      <h1 class="font-heading flex justify-center">
         {title}
-        <span class="text-amber-300">.</span>
+        <Dot />
       </h1>
     )
   }
