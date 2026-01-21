@@ -1,0 +1,13 @@
+@theme {
+  --color-primary: var(--color-sun-500);
+  --color-primary-light: var(--color-sun-100);
+  --color-primary-heavy: var(--color-sun-900);
+
+  --color-secondary: var(--color-amber-300);
+  --color-secondary-light: var(--color-amber-100);
+  --color-secondary-heavy: var(--color-amber-900);
+
+  --color-tertiary: var(--color-red-500);
+  --color-tertiary-light: var(--color-red-100);
+  --color-tertiary-heavy: var(--color-red-900);
+}

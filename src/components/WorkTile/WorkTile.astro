@@ -11,7 +11,7 @@ const { title, text, href } = Astro.props;
 ---
 
 <div class="text-swapper relative flex flex-col gap-4">
-  <h3 class="font-sub-heading text-red-500">{title}</h3>
+  <h3 class="font-sub-heading text-tertiary">{title}</h3>
   <p class="font-body">{text}</p>
   <a href={href} target="_blank" class="font-title work-tile-link">
     <TextSwap text="Visit project" />
