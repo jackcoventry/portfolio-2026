@@ -12,6 +12,10 @@ type NavMenuOptions = {
   itemsAnimateDelayMs?: number;
 };
 
+function nextFrame(fn: () => void) {
+  requestAnimationFrame(() => requestAnimationFrame(fn));
+}
+
 export function initNavigationMenu(options: NavMenuOptions = {}): Cleanup {
   const {
     toggleId = 'navigationToggle',
@@ -33,33 +37,61 @@ export function initNavigationMenu(options: NavMenuOptions = {}): Cleanup {
 
   let releaseTrap: Cleanup | null = null;
   let previousBodyOverflow = '';
+  let cleanedUp = false;
+  let itemsAnimTimer: number | null = null;
 
   const lgMq = window.matchMedia('(min-width: 64rem)');
-  let isLg = lgMq.matches;
 
-  const stopLenis = () => window.__lenis?.stop();
-  const startLenis = () => window.__lenis?.start();
+  const stopLenis = () => window.__lenis?.stop?.();
+  const startLenis = () => window.__lenis?.start?.();
+
+  const syncLenisLayout = () => {
+    const lenis = window.__lenis as any;
+    lenis?.resize?.();
+    lenis?.update?.();
+  };
+
+  const setBodyLocked = (locked: boolean) => {
+    if (locked) {
+      previousBodyOverflow = document.body.style.overflow;
+      document.body.classList.add('overflow-hidden', 'h-dvh');
+    } else {
+      document.body.style.overflow = previousBodyOverflow || '';
+      document.body.classList.remove('overflow-hidden', 'h-dvh');
+    }
+  };
 
   const setUI = (open: boolean) => {
-    if (open) {
-      previousBodyOverflow = document.body.style.overflow;
+    if (itemsAnimTimer != null) {
+      window.clearTimeout(itemsAnimTimer);
+      itemsAnimTimer = null;
+    }
 
-      document.body.classList.add('overflow-hidden', 'h-dvh');
-      navEl.classList.add('navigation-offset', 'flex', 'motion-safe:animate-fade-in');
+    if (open) {
+      setBodyLocked(true);
+
+      navEl.classList.add('navigation-offset', 'flex');
       navEl.classList.remove('hidden');
 
-      window.setTimeout(() => {
+      navEl.classList.add('motion-safe:animate-fade-in');
+
+      itemsAnimTimer = window.setTimeout(() => {
         navItemsEl?.classList.add('motion-safe:animate-shift-up');
       }, itemsAnimateDelayMs);
 
       stopLenis();
     } else {
-      document.body.style.overflow = previousBodyOverflow || '';
-      document.body.classList.remove('overflow-hidden', 'h-dvh');
+      setBodyLocked(false);
+
       navEl.classList.remove('navigation-offset', 'flex', 'motion-safe:animate-fade-in');
       navItemsEl?.classList.remove('motion-safe:animate-shift-up');
       navEl.classList.add('hidden');
+
       startLenis();
+
+      nextFrame(() => {
+        syncLenisLayout();
+      });
     }
 
     toggle.textContent = open ? 'Close' : 'Menu';
@@ -67,7 +99,10 @@ export function initNavigationMenu(options: NavMenuOptions = {}): Cleanup {
   };
 
   const openNav = () => {
-    if (!header) return;
+    if (!header) {
+      setUI(true);
+      return;
+    }
 
     setUI(true);
 
@@ -88,14 +123,10 @@ export function initNavigationMenu(options: NavMenuOptions = {}): Cleanup {
     const observer = new IntersectionObserver(
       ([entry]) => {
         header.classList.toggle('fixed', !entry.isIntersecting);
-        header.classList.toggle('lg:hidden', entry.isIntersecting);
         header.classList.toggle('motion-safe:animate-nav-entry', !entry.isIntersecting);
         headerStatic?.classList.toggle('lg:hidden', !entry.isIntersecting);
       },
-      {
-        root: null,
-        threshold: 0,
-      }
+      { root: null, threshold: 0 }
     );
 
     observer.observe(scrollSentinel);
@@ -111,10 +142,20 @@ export function initNavigationMenu(options: NavMenuOptions = {}): Cleanup {
   const onToggleClick = () => {
     navigationToggle();
   };
-
   toggle.addEventListener('click', onToggleClick);
 
-  let cleanedUp = false;
+  const onBreakpointChange = () => {
+    const open = navigationOpen.get();
+
+    setBodyLocked(open);
+
+    if (open) {
+      stopLenis();
+    } else {
+      startLenis();
+      nextFrame(() => syncLenisLayout());
+    }
+  };
 
   const cleanup: Cleanup = () => {
     if (cleanedUp) return;
@@ -125,10 +166,14 @@ export function initNavigationMenu(options: NavMenuOptions = {}): Cleanup {
 
     toggle.removeEventListener('click', onToggleClick);
 
+    lgMq.removeEventListener('change', onBreakpointChange);
+    window.removeEventListener('resize', onBreakpointChange);
+
     document.removeEventListener('astro:before-swap', cleanup);
     window.removeEventListener('pagehide', cleanup);
   };
 
+  window.addEventListener('resize', onBreakpointChange);
   document.addEventListener('astro:before-swap', cleanup);
   window.addEventListener('pagehide', cleanup);
 

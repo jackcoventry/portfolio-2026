@@ -11,6 +11,41 @@ type NavItem = {
 const { items = [] } = Astro.props;
 ---
 
+<header id="headerStatic" class="header | absolute top-0 left-0 z-30 hidden w-full lg:flex">
+  <nav class="w-full" aria-label="Primary">
+    {
+      items?.length > 0 ? (
+        <ul class="font-body flex justify-between">
+          <li>
+            <a href="/" class="site-author | font-body z-40 block p-5 lg:px-7">
+              {SITE_AUTHOR}
+            </a>
+          </li>
+          {items.map((item: NavItem) => {
+            const openInNewTab = Boolean(item?.externalLink);
+            const attributes = {
+              href: item.href,
+              ...(openInNewTab
+                ? {
+                    target: '_blank',
+                    rel: 'noopener noreferrer',
+                  }
+                : null),
+            };
+            return (
+              <li>
+                <a {...attributes} class="block">
+                  <TextSwap text={item.title} class="flex px-7 py-5" />
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      ) : null
+    }
+  </nav>
+</header>
+
 <header id="header" class="header | absolute top-0 left-0 z-30 flex w-full">
   <a href="/" class="site-author | font-body z-40 block p-5 lg:px-7">{SITE_AUTHOR}</a>
 
@@ -74,6 +109,16 @@ const { items = [] } = Astro.props;
   }
 
   .header.fixed .site-author:has(+ #navigationToggle[aria-expanded='true']) {
+    display: block;
+  }
+
+  .header:not(.fixed) #navigationToggle {
+    @media (width >= 64rem) {
+      display: none;
+    }
+  }
+
+  #navigationToggle:has(+ #navigation:not(.hidden)) {
     display: block;
   }
 
