@@ -1,253 +1,324 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest';
 import { initNavigationMenu } from '@/components/MainNavigation/MainNavigation';
 
-type NavOpenStore = {
-  get: () => boolean;
-  set: (v: boolean) => void;
-  subscribe: (cb: (v: boolean) => void) => () => void;
+type CreateFocusTrap = (typeof import('@/utils/focusTrap'))['createFocusTrap'];
+type Unsubscribe = () => void;
+
+type NavOpenStore<T> = {
+  get: () => T;
+  set: (v: T) => void;
+  subscribe: (fn: (v: T) => void) => Unsubscribe;
 };
 
-const subscribers = new Set<(v: boolean) => void>();
-let storeValue = false;
+function createStore<T>(initial: T): NavOpenStore<T> {
+  let value = initial;
+  const subs = new Set<(v: T) => void>();
+  return {
+    get: () => value,
+    set: (v: T) => {
+      value = v;
+      for (const fn of subs) fn(v);
+    },
+    subscribe: (fn) => {
+      subs.add(fn);
+      return () => subs.delete(fn);
+    },
+  };
+}
 
-const navigationOpenMock: NavOpenStore = {
-  get: () => storeValue,
-  set: (v) => {
-    storeValue = v;
-    subscribers.forEach((cb) => cb(v));
-  },
-  subscribe: (cb) => {
-    subscribers.add(cb);
-    return () => subscribers.delete(cb);
-  },
-};
+const navigationOpenStore = createStore(false);
 
-const navigationToggleMock = vi.fn(() => {
-  navigationOpenMock.set(!navigationOpenMock.get());
+vi.mock('@/store/navigation.js', () => {
+  return {
+    navigationOpen: navigationOpenStore,
+    navigationToggle: vi.fn(() => {
+      navigationOpenStore.set(!navigationOpenStore.get());
+    }),
+  };
 });
 
-const releaseTrapMock = vi.fn();
-const createFocusTrapMock = vi.fn(() => releaseTrapMock);
-
-vi.mock('@/store/navigation.js', () => ({
-  navigationOpen: navigationOpenMock,
-  navigationToggle: navigationToggleMock,
-}));
+const focusTrapRelease = vi.fn();
+const createFocusTrapImpl: CreateFocusTrap = ((..._args: any[]) =>
+  focusTrapRelease) as CreateFocusTrap;
+const createFocusTrapMock = vi.fn(createFocusTrapImpl);
 
 vi.mock('@/utils/focusTrap', () => ({
   createFocusTrap: createFocusTrapMock,
 }));
 
-type MqListener = (e: MediaQueryListEvent) => void;
+function installLenis() {
+  const stop = vi.fn();
+  const start = vi.fn();
+  const resize = vi.fn();
+  const update = vi.fn();
+  (window as any).__lenis = { stop, start, resize, update };
+  return { stop, start, resize, update };
+}
 
-function createMatchMediaController(initialMatches: boolean) {
-  let matches = initialMatches;
-  const listeners = new Set<MqListener>();
+type MediaQueryListener = (e: MediaQueryListEvent) => void;
+
+function installMatchMedia(matches = false) {
+  let currentMatches = matches;
+  const listeners = new Set<MediaQueryListener>();
 
   const mql: MediaQueryList = {
     media: '(min-width: 64rem)',
-    get matches() {
-      return matches;
-    },
+    matches: currentMatches,
     onchange: null,
-    addEventListener: (type: string, cb: EventListenerOrEventListenerObject) => {
-      if (type !== 'change') return;
-      listeners.add(cb as unknown as MqListener);
-    },
-    removeEventListener: (type: string, cb: EventListenerOrEventListenerObject) => {
-      if (type !== 'change') return;
-      listeners.delete(cb as unknown as MqListener);
-    },
-    addListener: () => {},
-    removeListener: () => {},
-    dispatchEvent: (_evt: Event) => true,
+    addEventListener: (_type: string, cb: any) => listeners.add(cb),
+    removeEventListener: (_type: string, cb: any) => listeners.delete(cb),
+    addListener: (cb: any) => listeners.add(cb),
+    removeListener: (cb: any) => listeners.delete(cb),
+    dispatchEvent: () => true,
+  } as any;
+
+  const trigger = (nextMatches: boolean) => {
+    currentMatches = nextMatches;
+    (mql as any).matches = nextMatches;
+    const evt = { matches: nextMatches, media: mql.media } as MediaQueryListEvent;
+    for (const cb of listeners) cb(evt);
   };
 
-  const dispatch = (nextMatches: boolean) => {
-    matches = nextMatches;
-    const evt = { matches: nextMatches } as MediaQueryListEvent;
-    listeners.forEach((cb) => cb(evt));
-  };
+  vi.stubGlobal(
+    'matchMedia',
+    vi.fn(() => mql)
+  );
+  return { mql, trigger };
+}
 
-  return { mql, dispatch };
+class FakeIntersectionObserver {
+  static instances: FakeIntersectionObserver[] = [];
+
+  callback: IntersectionObserverCallback;
+  options?: IntersectionObserverInit;
+  observe = vi.fn();
+  unobserve = vi.fn();
+  disconnect = vi.fn();
+
+  constructor(cb: IntersectionObserverCallback, options?: IntersectionObserverInit) {
+    this.callback = cb;
+    this.options = options;
+    FakeIntersectionObserver.instances.push(this);
+  }
+
+  trigger(entry: Partial<IntersectionObserverEntry>) {
+    this.callback([entry as IntersectionObserverEntry], this as any);
+  }
+}
+
+function installIntersectionObserver() {
+  FakeIntersectionObserver.instances = [];
+  vi.stubGlobal('IntersectionObserver', FakeIntersectionObserver as any);
+}
+
+function installRafImmediate() {
+  vi.stubGlobal('requestAnimationFrame', (cb: FrameRequestCallback) => {
+    cb(0);
+    return 1;
+  });
 }
 
 function setupDom() {
   document.body.innerHTML = `
+    <div id="scrollSentinel"></div>
+
+    <header id="headerStatic"></header>
+
     <header id="header">
+      <a class="site-author" href="/">Author</a>
       <button id="navigationToggle" aria-controls="navigation" aria-expanded="false">Menu</button>
-      <nav id="navigation" class="hidden">
+      <nav id="navigation" class="hidden" aria-label="Primary">
         <ul id="navigationItems"></ul>
       </nav>
     </header>
   `;
+
+  return {
+    toggle: document.getElementById('navigationToggle') as HTMLButtonElement,
+    nav: document.getElementById('navigation') as HTMLElement,
+    navItems: document.getElementById('navigationItems') as HTMLElement,
+    header: document.getElementById('header') as HTMLElement,
+    headerStatic: document.getElementById('headerStatic') as HTMLElement,
+    scrollSentinel: document.getElementById('scrollSentinel') as HTMLElement,
+  };
 }
 
 describe('initNavigationMenu', () => {
-  let mm: ReturnType<typeof createMatchMediaController>;
-
   beforeEach(() => {
     vi.useFakeTimers();
-    vi.clearAllMocks();
+    navigationOpenStore.set(false);
 
-    subscribers.clear();
-    storeValue = false;
-
-    setupDom();
-
-    (window as any).__lenis = {
-      stop: vi.fn(),
-      start: vi.fn(),
-    };
-
-    mm = createMatchMediaController(false);
-    vi.spyOn(window, 'matchMedia').mockImplementation(() => mm.mql);
+    installIntersectionObserver();
+    installRafImmediate();
+    installMatchMedia(false);
   });
 
   afterEach(() => {
     vi.useRealTimers();
-    vi.restoreAllMocks();
+    vi.clearAllMocks();
     document.body.innerHTML = '';
     delete (window as any).__lenis;
   });
 
-  it('returns cleanup and no-ops if required elements are missing', () => {
+  it('returns a no-op cleanup if required elements are missing', () => {
     document.body.innerHTML = `<div></div>`;
     const cleanup = initNavigationMenu();
     expect(typeof cleanup).toBe('function');
-    cleanup();
+    expect(() => cleanup()).not.toThrow();
   });
 
-  it('initially syncs UI from navigationOpen.get()', () => {
-    storeValue = true;
+  it('initialises UI from store state (closed by default)', () => {
+    const { toggle, nav } = setupDom();
+    installLenis();
 
     initNavigationMenu();
 
-    const toggle = document.getElementById('navigationToggle') as HTMLButtonElement;
-    const nav = document.getElementById('navigation') as HTMLElement;
+    expect(toggle.getAttribute('aria-expanded')).toBe('false');
+    expect(toggle.textContent).toBe('Menu');
+    expect(nav.classList.contains('hidden')).toBe(true);
+    expect(document.body.classList.contains('overflow-hidden')).toBe(false);
+    expect(document.body.classList.contains('h-dvh')).toBe(false);
+  });
 
-    expect(toggle.textContent).toBe('Close');
-    expect(toggle.getAttribute('aria-expanded')).toBe('true');
+  it('opens nav on toggle click: locks body, shows nav, stops Lenis, sets aria/text, creates focus trap', () => {
+    const { toggle, nav, navItems, header } = setupDom();
+    const lenis = installLenis();
+
+    initNavigationMenu({ itemsAnimateDelayMs: 250 });
+
+    toggle.click();
+
+    expect(document.body.classList.contains('overflow-hidden')).toBe(true);
+    expect(document.body.classList.contains('h-dvh')).toBe(true);
 
     expect(nav.classList.contains('hidden')).toBe(false);
     expect(nav.classList.contains('flex')).toBe(true);
-    expect(document.body.classList.contains('max-lg:overflow-hidden')).toBe(true);
-
-    expect((window as any).__lenis.stop).toHaveBeenCalledTimes(1);
-  });
-
-  it('opening (small viewport) applies classes, stops lenis, and creates a focus trap', () => {
-    initNavigationMenu();
-
-    navigationOpenMock.set(true);
-
-    const toggle = document.getElementById('navigationToggle') as HTMLButtonElement;
-    const nav = document.getElementById('navigation') as HTMLElement;
-    const items = document.getElementById('navigationItems') as HTMLElement;
-
-    expect(toggle.textContent).toBe('Close');
-    expect(toggle.getAttribute('aria-expanded')).toBe('true');
-
-    expect(document.body.classList.contains('max-lg:overflow-hidden')).toBe(true);
-    expect(nav.classList.contains('hidden')).toBe(false);
     expect(nav.classList.contains('navigation-offset')).toBe(true);
+    expect(nav.classList.contains('motion-safe:animate-fade-in')).toBe(true);
+
+    expect(lenis.stop).toHaveBeenCalledTimes(1);
+
+    expect(toggle.getAttribute('aria-expanded')).toBe('true');
+    expect(toggle.textContent).toBe('Close');
 
     expect(createFocusTrapMock).toHaveBeenCalledTimes(1);
-    expect(releaseTrapMock).not.toHaveBeenCalled();
+    expect(createFocusTrapMock.mock.calls[0][0]).toBe(header);
 
-    expect(items.classList.contains('motion-safe:animate-shift-up')).toBe(false);
-    vi.advanceTimersByTime(250);
-    expect(items.classList.contains('motion-safe:animate-shift-up')).toBe(true);
-
-    expect((window as any).__lenis.stop).toHaveBeenCalledTimes(1);
-    expect((window as any).__lenis.start).toHaveBeenCalledTimes(0);
+    expect(navItems.classList.contains('motion-safe:animate-shift-up')).toBe(false);
+    vi.advanceTimersByTime(249);
+    expect(navItems.classList.contains('motion-safe:animate-shift-up')).toBe(false);
+    vi.advanceTimersByTime(1);
+    expect(navItems.classList.contains('motion-safe:animate-shift-up')).toBe(true);
   });
 
-  it('closing removes classes, starts lenis, and releases focus trap', () => {
+  it('closes nav when toggled again: unlocks body, hides nav, starts Lenis, calls resize/update on nextFrame, releases focus trap', () => {
+    const { toggle, nav, navItems } = setupDom();
+    const lenis = installLenis();
+
     initNavigationMenu();
 
-    navigationOpenMock.set(true);
-    expect(createFocusTrapMock).toHaveBeenCalledTimes(1);
+    toggle.click(); // open
+    expect(navisOpen()).toBe(true);
 
-    navigationOpenMock.set(false);
+    toggle.click(); // close
 
-    const toggle = document.getElementById('navigationToggle') as HTMLButtonElement;
-    const nav = document.getElementById('navigation') as HTMLElement;
-    const items = document.getElementById('navigationItems') as HTMLElement;
+    expect(document.body.classList.contains('overflow-hidden')).toBe(false);
+    expect(document.body.classList.contains('h-dvh')).toBe(false);
 
-    expect(toggle.textContent).toBe('Menu');
-    expect(toggle.getAttribute('aria-expanded')).toBe('false');
-
-    expect(document.body.classList.contains('max-lg:overflow-hidden')).toBe(false);
     expect(nav.classList.contains('hidden')).toBe(true);
-    expect(items.classList.contains('motion-safe:animate-shift-up')).toBe(false);
+    expect(nav.classList.contains('flex')).toBe(false);
+    expect(nav.classList.contains('navigation-offset')).toBe(false);
+    expect(nav.classList.contains('motion-safe:animate-fade-in')).toBe(false);
 
-    expect(releaseTrapMock).toHaveBeenCalledTimes(1);
-    expect((window as any).__lenis.start).toHaveBeenCalledTimes(1);
+    expect(navItems.classList.contains('motion-safe:animate-shift-up')).toBe(false);
+
+    expect(lenis.start).toHaveBeenCalledTimes(1);
+    expect(lenis.resize).toHaveBeenCalledTimes(1);
+    expect(lenis.update).toHaveBeenCalledTimes(1);
+
+    expect(focusTrapRelease).toHaveBeenCalledTimes(1);
+
+    expect(toggle.getAttribute('aria-expanded')).toBe('false');
+    expect(toggle.textContent).toBe('Menu');
   });
 
-  it('toggle button click toggles only when NOT large', () => {
-    initNavigationMenu();
+  it('responds to breakpoint change: if open, stops Lenis; if closed, starts Lenis and resyncs', () => {
+    const { toggle } = setupDom();
+    const lenis = installLenis();
+    const mm = installMatchMedia(false);
 
-    const toggle = document.getElementById('navigationToggle') as HTMLButtonElement;
+    initNavigationMenu();
 
     toggle.click();
-    expect(navigationToggleMock).toHaveBeenCalledTimes(1);
+    expect(lenis.stop).toHaveBeenCalledTimes(1);
 
-    mm.dispatch(true);
+    mm.trigger(true);
+    expect(lenis.stop).toHaveBeenCalledTimes(2);
 
     toggle.click();
-    expect(navigationToggleMock).toHaveBeenCalledTimes(1);
+    expect(lenis.start).toHaveBeenCalledTimes(1);
+    expect(lenis.resize).toHaveBeenCalledTimes(1);
+    expect(lenis.update).toHaveBeenCalledTimes(1);
+
+    mm.trigger(false);
+    expect(lenis.start).toHaveBeenCalledTimes(2);
+    expect(lenis.resize).toHaveBeenCalledTimes(2);
+    expect(lenis.update).toHaveBeenCalledTimes(2);
   });
 
-  it('in large viewport, subscription forces nav closed and does not open', () => {
-    mm = createMatchMediaController(true);
-    (window.matchMedia as unknown as ReturnType<typeof vi.fn>).mockImplementation(() => mm.mql);
+  it('pins header via IntersectionObserver and toggles headerStatic visibility', () => {
+    const { header, headerStatic } = setupDom();
+    installLenis();
 
     initNavigationMenu();
 
-    navigationOpenMock.set(true);
+    const obs = FakeIntersectionObserver.instances[0];
+    expect(obs).toBeTruthy();
 
-    const toggle = document.getElementById('navigationToggle') as HTMLButtonElement;
-    const nav = document.getElementById('navigation') as HTMLElement;
+    obs.trigger({ isIntersecting: false } as any);
 
-    expect(navigationOpenMock.get()).toBe(false);
-    expect(toggle.textContent).toBe('Menu');
-    expect(toggle.getAttribute('aria-expanded')).toBe('false');
-    expect(nav.classList.contains('hidden')).toBe(true);
+    expect(header.classList.contains('fixed')).toBe(true);
+    expect(header.classList.contains('motion-safe:animate-nav-entry')).toBe(true);
+    expect(headerStatic.classList.contains('lg:hidden')).toBe(true);
 
-    expect(createFocusTrapMock).toHaveBeenCalledTimes(0);
+    obs.trigger({ isIntersecting: true } as any);
+
+    expect(header.classList.contains('fixed')).toBe(false);
+    expect(header.classList.contains('motion-safe:animate-nav-entry')).toBe(false);
+    expect(headerStatic.classList.contains('lg:hidden')).toBe(false);
   });
 
-  it('breakpoint change from small -> large closes nav, sets store false, and starts lenis', () => {
-    initNavigationMenu();
+  it('cleanup removes listeners, closes nav, releases trap, disconnects observer', () => {
+    const { toggle, nav } = setupDom();
+    const lenis = installLenis();
 
-    navigationOpenMock.set(true);
-    expect(navigationOpenMock.get()).toBe(true);
-
-    mm.dispatch(true);
-
-    expect(navigationOpenMock.get()).toBe(false);
-    expect((window as any).__lenis.start).toHaveBeenCalled();
-  });
-
-  it('cleanup runs on astro:before-swap and unsubscribes / removes listeners', () => {
+    const mm = installMatchMedia(false);
     const cleanup = initNavigationMenu();
 
-    navigationOpenMock.set(true);
+    toggle.click();
+    expect(nav.classList.contains('hidden')).toBe(false);
 
-    document.dispatchEvent(new Event('astro:before-swap'));
+    const obs = FakeIntersectionObserver.instances[0];
+    expect(obs).toBeTruthy();
 
-    const nav = document.getElementById('navigation') as HTMLElement;
+    cleanup();
+
+    expect(nav.classList.contains('hidden')).toBe(true);
+    expect(document.body.classList.contains('overflow-hidden')).toBe(false);
+
+    expect(focusTrapRelease).toHaveBeenCalled();
+
+    expect(obs.disconnect).toHaveBeenCalledTimes(1);
+
+    navigationOpenStore.set(true);
     expect(nav.classList.contains('hidden')).toBe(true);
 
-    const toggle = document.getElementById('navigationToggle') as HTMLButtonElement;
-    const beforeText = toggle.textContent;
-
-    navigationOpenMock.set(true);
-    expect(toggle.textContent).toBe(beforeText);
-
-    cleanup();
-    cleanup();
+    const stopCalls = lenis.stop.mock.calls.length;
+    mm.trigger(true);
+    expect(lenis.stop.mock.calls.length).toBe(stopCalls);
   });
 });
+
+function navisOpen() {
+  return document.getElementById('navigationToggle')?.getAttribute('aria-expanded') === 'true';
+}

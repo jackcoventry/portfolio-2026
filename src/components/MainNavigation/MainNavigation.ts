@@ -40,8 +40,6 @@ export function initNavigationMenu(options: NavMenuOptions = {}): Cleanup {
   let cleanedUp = false;
   let itemsAnimTimer: number | null = null;
 
-  const lgMq = window.matchMedia('(min-width: 64rem)');
-
   const stopLenis = () => window.__lenis?.stop?.();
   const startLenis = () => window.__lenis?.start?.();
 
@@ -165,8 +163,6 @@ export function initNavigationMenu(options: NavMenuOptions = {}): Cleanup {
     unsubscribe?.();
 
     toggle.removeEventListener('click', onToggleClick);
-
-    lgMq.removeEventListener('change', onBreakpointChange);
     window.removeEventListener('resize', onBreakpointChange);
 
     document.removeEventListener('astro:before-swap', cleanup);
