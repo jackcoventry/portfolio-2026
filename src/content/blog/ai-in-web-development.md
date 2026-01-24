@@ -2,7 +2,7 @@
 title: 'AI in web development: there and back again'
 description: ''
 pubDate: 'November 19 2024'
-listingImage: '../../assets/trees/large.webp'
+listingImage: '../../assets/trees.webp'
 duration: 5
 ---
 

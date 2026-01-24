@@ -4,7 +4,7 @@ import LogoBlock from '@/components/LogoBlock/LogoBlock.astro';
 import SwipeImage from '@/components/SwipeImage/SwipeImage.astro';
 import Dot from '@/components/Dot/Dot.astro';
 
-import BannerImage from '@/assets/ocean/large.webp';
+import BannerImage from '@/assets/ocean.webp';
 import Portrait from '@/assets/me.webp';
 
 export type Tool = {
@@ -26,15 +26,9 @@ const { title, text, tools } = Astro.props;
     <BannerClip initialInsetPct={20} initialScale={1.5}>
       <img
         src={BannerImage.src}
-        srcset={`
-          ${BannerImage.src} 1024w,
-          ${BannerImage.src}  1440w,
-          ${BannerImage.src}  1920w
-        `}
-        sizes="(min-width: 1024px) 50vw, 100vw"
         alt="A landscape photography of an ocean on a sunny day"
-        width="1024"
-        height="512"
+        width="1440"
+        height="720"
         loading="lazy"
         decoding="async"
       />

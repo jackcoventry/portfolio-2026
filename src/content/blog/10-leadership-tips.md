@@ -3,6 +3,7 @@ title: '10 tips for effective leadership'
 description: 'Here is a sample of some basic Markdown syntax that can be used when writing Markdown content in Astro.'
 pubDate: 'Jun 19 2024'
 listingImage: '../../assets/forest.webp'
+duration: 2
 ---
 
 Here is a sample of some basic Markdown syntax that can be used when writing Markdown content in Astro.
