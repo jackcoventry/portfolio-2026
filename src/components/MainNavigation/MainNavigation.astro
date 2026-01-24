@@ -11,13 +11,19 @@ type NavItem = {
 const { items = [] } = Astro.props;
 ---
 
+<a
+  href="#content"
+  class="skip-to-content | font-body absolute top-0 left-0 -m-px h-px w-px overflow-hidden border-0 bg-white p-5 whitespace-nowrap"
+  >Skip to content</a
+>
+
 <header id="headerStatic" class="header | absolute top-0 left-0 z-30 hidden w-full lg:flex">
   <nav class="w-full" aria-label="Primary">
     {
       items?.length > 0 ? (
         <ul class="font-body flex justify-between">
           <li>
-            <a href="/" class="site-author | font-body z-40 block p-5 lg:px-7">
+            <a href="/" class="font-body z-40 block p-5 lg:px-7">
               {SITE_AUTHOR}
             </a>
           </li>
@@ -104,20 +110,25 @@ const { items = [] } = Astro.props;
     height: var(--navigation-height);
   }
 
+  /* Hide site logo when in sticky style */
   .header.fixed .site-author {
     display: none;
   }
 
+  /* Show site logo when in sticky style, but navigation is open */
   .header.fixed .site-author:has(+ #navigationToggle[aria-expanded='true']) {
     display: block;
   }
 
-  .header:not(.fixed) #navigationToggle {
+  /* When the header is static, hide the navigation toggle on large screens */
+  .header:not(.fixed) #navigationToggle,
+  .header:not(.fixed) .site-author {
     @media (width >= 64rem) {
       display: none;
     }
   }
 
+  /* Show navigation toggle when navigation is open */
   #navigationToggle:has(+ #navigation:not(.hidden)) {
     display: block;
   }
@@ -128,6 +139,23 @@ const { items = [] } = Astro.props;
     @media (width >= 64rem) {
       padding-top: 0;
     }
+  }
+
+  .skip-to-content {
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+  }
+
+  .skip-to-content:focus {
+    clip: auto;
+    clip-path: none;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    transform: translate(10px, 10px);
+    white-space: normal;
+    width: auto;
+    z-index: 2147483647;
   }
 </style>
 

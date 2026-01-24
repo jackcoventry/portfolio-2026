@@ -16,6 +16,15 @@ function nextFrame(fn: () => void) {
   requestAnimationFrame(() => requestAnimationFrame(fn));
 }
 
+function skipToContent(event: { preventDefault: () => void }) {
+  event.preventDefault();
+  const target = document.getElementById('content');
+  if (!target) return;
+  history.replaceState(null, '', '#content');
+  target.scrollIntoView();
+  target.focus({ preventScroll: true });
+}
+
 export function initNavigationMenu(options: NavMenuOptions = {}): Cleanup {
   const {
     toggleId = 'navigationToggle',
@@ -32,6 +41,7 @@ export function initNavigationMenu(options: NavMenuOptions = {}): Cleanup {
   const header = document.getElementById(headerId);
   const headerStatic = document.getElementById('headerStatic');
   const scrollSentinel = document.getElementById('scrollSentinel');
+  const skipLink = document.querySelector('a[href="#content"]');
 
   if (!toggle || !navEl) return () => {};
 
@@ -168,6 +178,8 @@ export function initNavigationMenu(options: NavMenuOptions = {}): Cleanup {
     document.removeEventListener('astro:before-swap', cleanup);
     window.removeEventListener('pagehide', cleanup);
   };
+
+  skipLink?.addEventListener('click', skipToContent);
 
   window.addEventListener('resize', onBreakpointChange);
   document.addEventListener('astro:before-swap', cleanup);
