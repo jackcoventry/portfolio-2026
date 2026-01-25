@@ -35,7 +35,7 @@ const { title, pubDate, listingImage, duration } = post.data;
                 .filter((h) => h.depth === 2 || h.depth === 3)
                 .map((h) => (
                   <li class={`depth-${h.depth}`}>
-                    <a href={`#${h.slug}`} class="font-body hover:underline">
+                    <a href={`#${h.slug}`} class="font-body [@media(hover:hover)]:hover:underline">
                       {h.text}
                     </a>
                   </li>

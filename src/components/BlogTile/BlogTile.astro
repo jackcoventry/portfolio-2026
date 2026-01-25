@@ -72,14 +72,6 @@ const hasImage = Boolean(image);
     transform: scale(1.15);
   }
 
-  .blog-tile:hover .blog-tile-image {
-    transform: scale(1);
-  }
-
-  .blog-tile:hover .tile-overlay {
-    background: rgba(0, 0, 0, 0.6);
-  }
-
   .blog-tile-link {
     box-shadow: 0 0 0 0 inset var(--focus-color);
     transition: box-shadow ease-in-out 0.25s;
@@ -89,6 +81,16 @@ const hasImage = Boolean(image);
     box-shadow: 0 0 0 10px inset var(--focus-color);
   }
 
+  @media (hover: hover) {
+    .blog-tile:hover .blog-tile-image {
+      transform: scale(1);
+    }
+
+    .blog-tile:hover .tile-overlay {
+      background: rgba(0, 0, 0, 0.6);
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .blog-tile-image,
     .blog-tile-link,
@@ -96,8 +98,10 @@ const hasImage = Boolean(image);
       transition: none;
     }
 
-    .blog-tile:hover .blog-tile-image {
-      transform: none;
+    @media (hover: hover) {
+      .blog-tile:hover .blog-tile-image {
+        transform: none;
+      }
     }
   }
 </style>

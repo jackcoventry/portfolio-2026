@@ -31,10 +31,10 @@ const { title, text } = Astro.props;
 <section class="flex flex-col gap-6 p-7 pt-9">
   {
     title && (
-      <h1 class="font-heading flex justify-center">
+      <h2 class="font-heading flex justify-center">
         {title}
         <Dot />
-      </h1>
+      </h2>
     )
   }
   {text && <p class="font-sub-heading text-center">{text}</p>}
