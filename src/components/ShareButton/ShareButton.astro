@@ -46,7 +46,32 @@ const { url } = Astro.props;
   });
 
   btn.addEventListener('click', async () => {
-    await navigator.clipboard.writeText(url);
+    if (navigator.share) {
+      try {
+        await navigator.share({ url, title: document.title });
+        flashCopied();
+        return;
+      } catch {}
+    }
+
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(url);
+        flashCopied();
+        return;
+      }
+    } catch {}
+
+    const ta = document.createElement('textarea');
+    ta.value = url;
+    ta.setAttribute('readonly', '');
+    ta.style.position = 'fixed';
+    ta.style.top = '-9999px';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    ta.remove();
+
     flashCopied();
   });
 </script>
