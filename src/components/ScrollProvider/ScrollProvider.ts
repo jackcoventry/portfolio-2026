@@ -1,3 +1,4 @@
+import { prefersReducedMotion } from '@/utils/prefersReduceMotion';
 import Lenis from 'lenis';
 
 export type InitScrollProviderOptions = {
@@ -5,10 +6,7 @@ export type InitScrollProviderOptions = {
 };
 
 export function initScrollProvider(options: InitScrollProviderOptions = {}) {
-  const prefersReducedMotion =
-    globalThis.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches ?? false;
-
-  if (prefersReducedMotion) return null;
+  if (prefersReducedMotion()) return null;
 
   if (window.__lenis) return window.__lenis;
 

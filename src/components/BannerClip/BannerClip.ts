@@ -1,4 +1,5 @@
 import { clamp } from '@/utils/clamp';
+import { prefersReducedMotion } from '@/utils/prefersReduceMotion';
 
 type BannerClipDataset = {
   ease?: string;
@@ -10,10 +11,6 @@ type BannerClipDataset = {
 type BannerClipEl = HTMLElement & {
   dataset: DOMStringMap & BannerClipDataset;
 };
-
-function prefersReducedMotion(): boolean {
-  return Boolean(globalThis.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches);
-}
 
 function parseNumber(
   value: string | undefined,

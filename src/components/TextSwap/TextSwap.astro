@@ -37,16 +37,12 @@ const chars = splitGraphemes(text);
     --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
-  .text-swap .char {
-    line-height: 1.1;
-  }
-
   .text-swap .top,
   .text-swap .bottom {
-    transition-property: transform;
-    transition-duration: var(--duration);
-    transition-timing-function: var(--ease);
     transition-delay: 0ms;
+    transition-duration: var(--duration);
+    transition-property: transform;
+    transition-timing-function: var(--ease);
   }
 
   .text-swap .bottom {

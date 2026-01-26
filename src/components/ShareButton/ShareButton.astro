@@ -8,26 +8,18 @@ const { url } = Astro.props;
   data-share-url={url}
   aria-live="polite"
   aria-atomic="true"
-  class="font-body relative cursor-pointer"
+  class="share-button | font-body relative cursor-pointer"
 >
-  <span data-label>Share link</span>
-  <span data-copied class="absolute top-auto left-0">Copied!</span>
+  <span data-label class="opacity-100">Share link</span>
+  <span data-copied class="absolute top-auto left-0 opacity-0">Copied!</span>
 </button>
 
 <style>
-  button [data-label] {
-    opacity: 1;
-  }
-
-  button [data-copied] {
+  .share-button[data-copied='true'] [data-label] {
     opacity: 0;
   }
 
-  button[data-copied='true'] [data-label] {
-    opacity: 0;
-  }
-
-  button[data-copied='true'] [data-copied] {
+  .share-button[data-copied='true'] [data-copied] {
     opacity: 1;
   }
 </style>
