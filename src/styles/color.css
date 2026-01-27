@@ -3,11 +3,11 @@
   --color-primary-light: var(--color-sun-100);
   --color-primary-heavy: var(--color-sun-900);
 
-  --color-secondary: var(--color-amber-300);
-  --color-secondary-light: var(--color-amber-100);
-  --color-secondary-heavy: var(--color-amber-900);
+  --color-secondary: var(--color-moon-500);
+  --color-secondary-light: var(--color-moon-100);
+  --color-secondary-heavy: var(--color-moon-900);
 
-  --color-tertiary: var(--color-red-500);
-  --color-tertiary-light: var(--color-red-100);
-  --color-tertiary-heavy: var(--color-red-900);
+  --color-tertiary: var(--color-star-500);
+  --color-tertiary-light: var(--color-star-100);
+  --color-tertiary-heavy: var(--color-star-900);
 }

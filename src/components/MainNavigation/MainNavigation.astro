@@ -23,7 +23,7 @@ const { items = [] } = Astro.props;
       items?.length > 0 ? (
         <ul class="font-body flex justify-between">
           <li>
-            <a href="/" class="font-body z-40 block p-5 lg:px-7">
+            <a href="/" class="font-body z-40 block p-6">
               {SITE_AUTHOR}
             </a>
           </li>
@@ -41,7 +41,7 @@ const { items = [] } = Astro.props;
             return (
               <li>
                 <a {...attributes} class="block">
-                  <TextSwap text={item.title} class="flex px-7 py-5" />
+                  <TextSwap text={item.title} class="flex p-6" />
                 </a>
               </li>
             );
@@ -76,7 +76,7 @@ const { items = [] } = Astro.props;
 
   <nav
     id="navigation"
-    class="bg-secondary-light fixed top-0 left-0 z-30 hidden h-dvh w-dvw items-center justify-center pt-0"
+    class="bg-tertiary-light fixed top-0 left-0 z-30 hidden h-dvh w-dvw items-center justify-center pt-0"
     aria-label="Primary"
   >
     {

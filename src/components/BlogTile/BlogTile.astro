@@ -1,14 +1,11 @@
 ---
-import TextSwap from '@/components/TextSwap/TextSwap.astro';
-
 export type BlogTileProps = {
   href: string;
   image?: string;
-  text: string;
   title: string;
 };
 
-const { title, text, href, image } = Astro.props;
+const { title, href, image } = Astro.props;
 const hasImage = Boolean(image);
 ---
 
@@ -30,21 +27,15 @@ const hasImage = Boolean(image);
     href ? (
       <a
         href={href}
-        class="blog-tile-link relative z-20 flex h-125 cursor-pointer flex-col gap-3 p-5"
+        class="blog-tile-link relative z-20 flex h-125 cursor-pointer items-center gap-3 text-center"
         aria-label={`Read more: ${title}`}
         tabindex="0"
       >
-        {title && <h3 class="font-sub-heading">{title}</h3>}
-        {text && <p class="font-body">{text}</p>}
-
-        <span class="font-title mt-auto text-right">
-          <TextSwap text="Read more" />
-        </span>
+        {title && <h3 class="font-sub-heading p-4">{title}</h3>}
       </a>
     ) : (
-      <div class="relative z-20 flex h-125 flex-col gap-3 p-5">
+      <div class="relative z-20 flex h-125 flex-col gap-3">
         {title && <h3 class="font-sub-heading">{title}</h3>}
-        {text && <p class="font-body">{text}</p>}
       </div>
     )
   }
@@ -57,7 +48,8 @@ const hasImage = Boolean(image);
   }
 
   [data-has-image='true'] .tile-overlay {
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.6);
+    filter: blur(10px);
   }
 
   [data-has-image='true'] {

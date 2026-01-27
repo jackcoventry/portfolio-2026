@@ -1,35 +1,42 @@
 {
   "color": {
-    "$type": "color",
     "sun": {
-      "100": {
-        "$value": "#EEDDFD"
-      },
-      "200": {
-        "$value": "#DCBBFC"
-      },
-      "300": {
-        "$value": "#CB99FA"
-      },
-      "400": {
-        "$value": "#BA77F9"
-      },
-      "500": {
-        "$value": "#A855F7",
-        "$description": "Base colour"
-      },
-      "600": {
-        "$value": "#8815F4"
-      },
-      "700": {
-        "$value": "#6609BE"
-      },
-      "800": {
-        "$value": "#44067F"
-      },
-      "900": {
-        "$value": "#22033F"
-      }
+      "$type": "color",
+      "100": { "$value": "#FFFFFF" },
+      "200": { "$value": "#FCFCFB" },
+      "300": { "$value": "#F7F6F4" },
+      "400": { "$value": "#F1EFEA" },
+      "500": { "$value": "#E9E6DF" },
+      "600": { "$value": "#D9D5CB" },
+      "700": { "$value": "#C4BFB3" },
+      "800": { "$value": "#A9A394" },
+      "900": { "$value": "#8C8576" }
+    },
+
+    "moon": {
+      "$type": "color",
+      "100": { "$value": "#F4F5F6" },
+      "200": { "$value": "#E1E3E6" },
+      "300": { "$value": "#C6CAD0" },
+      "400": { "$value": "#9AA1AA" },
+      "500": { "$value": "#6B7280" },
+      "600": { "$value": "#4B5563" },
+      "700": { "$value": "#374151" },
+      "800": { "$value": "#1F2937" },
+      "900": { "$value": "#111827" }
+    },
+
+    "star": {
+      "$type": "color",
+      "100": { "$value": "#FFF1EE" },
+      "200": { "$value": "#FFDAD3" },
+      "300": { "$value": "#FFB8A8" },
+      "400": { "$value": "#FF8F78" },
+      "500": { "$value": "#F76B4D" },
+      "600": { "$value": "#D9573E" },
+      "700": { "$value": "#B84532" },
+      "800": { "$value": "#933429" },
+      "900": { "$value": "#6F251D" }
     }
   }
 }
