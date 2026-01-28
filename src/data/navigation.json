@@ -2,16 +2,16 @@
   "main": [
     {
       "href": "/blog",
-      "title": "Blog"
+      "label": "Blog"
     },
     {
       "href": "https://github.com/mmmoustache",
-      "title": "Github",
+      "label": "Github",
       "externalLink": true
     },
     {
       "href": "https://www.linkedin.com/in/jack-coventry-713a8811/",
-      "title": "LinkedIn",
+      "label": "LinkedIn",
       "externalLink": true
     }
   ]

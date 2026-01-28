@@ -3,7 +3,7 @@ import TextSwap from '@/components/TextSwap/TextSwap.astro';
 
 type NavItem = {
   href: string;
-  title: string;
+  label: string;
 };
 
 type Props = {
@@ -31,7 +31,7 @@ const { items = [] } = Astro.props;
             {items.map((item: NavItem) => (
               <li>
                 <a href={item.href} class="font-sub-heading block">
-                  <TextSwap text={item.title} class="flex" />
+                  <TextSwap text={item.label} class="flex" />
                 </a>
               </li>
             ))}
