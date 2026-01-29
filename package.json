@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev --host",
-    "build": "astro build",
+    "build": "npm run tokens && astro build",
     "preview": "astro preview",
     "astro": "astro",
     "tokens": "node config/style-dictionary.mjs",
