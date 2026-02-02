@@ -28,19 +28,21 @@ const { title, text } = Astro.props;
   </div>
 </section>
 
-<section class="flex flex-col gap-6 bg-white p-7 pt-9">
-  {
-    title && (
-      <h2 class="font-heading flex justify-center">
-        {title}
-        <Dot />
-      </h2>
-    )
-  }
-  {text && <p class="font-sub-heading text-center">{text}</p>}
+<section class="bg-white pt-9">
+  <div class="flex flex-col gap-6 px-5">
+    {
+      title && (
+        <h2 class="font-heading flex justify-center">
+          {title}
+          <Dot />
+        </h2>
+      )
+    }
+    {text && <p class="font-body lg:font-title text-center">{text}</p>}
+  </div>
   {
     posts.length > 0 ? (
-      <ul class="layout-content | grid max-w-96 gap-4 py-7 xl:max-w-7xl xl:grid-cols-3">
+      <ul class="layout-content | grid max-w-3xl gap-4 py-7 xl:max-w-7xl xl:grid-cols-3">
         {posts?.map((item, index) => (
           <li class="col-span-1">
             <SwipeImage threshold={0.3} delayMs={200 * index}>

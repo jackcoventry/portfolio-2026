@@ -11,7 +11,7 @@ const { title, text, href } = Astro.props;
 ---
 
 <div class="work-title | relative flex flex-col justify-center gap-4">
-  <div>
+  <div class="flex flex-col gap-1">
     <h3 class="font-sub-heading">{title}</h3>
     <p class="font-body text-secondary">{text}</p>
   </div>
@@ -19,6 +19,7 @@ const { title, text, href } = Astro.props;
     <a href={href} target="_blank" class="font-body work-tile-link">
       <TextSwap text="Visit project" />
     </a>
+    <span class="text-tertiary">•</span>
     <a href={href} target="_blank" class="font-body work-tile-link">
       <TextSwap text="Github" />
     </a>

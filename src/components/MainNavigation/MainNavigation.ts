@@ -80,7 +80,6 @@ export function initMainNav(scope: ParentNode = document): void {
 
   const mqDesktop = globalThis.matchMedia('(min-width: 1024px)');
 
-  // State
   let isMenuOpen = false;
   let isAtTop = window.scrollY <= 0;
   let isBarVisible = !mqDesktop.matches;
@@ -355,6 +354,25 @@ export function initMainNav(scope: ParentNode = document): void {
     openMenu();
   }
 
+  function skipToContent(e: MouseEvent) {
+    const target = e.target;
+
+    if (!(target instanceof HTMLElement)) return;
+
+    const link = target.closest<HTMLAnchorElement>('.skip-to-content');
+    if (!link) return;
+
+    const content = document.getElementById('content');
+    if (!content) return;
+
+    e.preventDefault();
+
+    if (content instanceof HTMLElement) {
+      content.focus({ preventScroll: true });
+      content.scrollIntoView({ block: 'start' });
+    }
+  }
+
   applyNavOffset();
   setupDesktopObserver();
   updateAtTop();
@@ -369,6 +387,8 @@ export function initMainNav(scope: ParentNode = document): void {
   els.panel.addEventListener('click', onPanelClick);
 
   document.addEventListener('keydown', onGlobalShortcut, true);
+
+  document.addEventListener('click', skipToContent);
 }
 
 function autoInit() {
