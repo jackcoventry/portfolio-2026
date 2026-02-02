@@ -1,216 +1,51 @@
 ---
-title: 'Improving a team culture'
-description: 'Here is a sample of some basic Markdown syntax that can be used when writing Markdown content in Astro.'
-pubDate: 'Jun 19 2024'
+title: "Tuning a team's culture"
+description: 'Turning a team culture from nothing to something special'
+pubDate: 'Jan 11 2026'
 listingImage: '../../assets/mountains.webp'
-duration: 2
+duration: 5
 ---
 
-Here is a sample of some basic Markdown syntax that can be used when writing Markdown content in Astro.
+# In a previous job, following a company merger, two web engineering departments were smashed together from two former companies; two varying sets of personalities, two sets of traditions. The head of the department was from the _other side_, we didn't know much about them but there was high anticipation of the joining of two teams.
 
-## Headings
+It was clear that it wasn't going to be a smooth transition - I heard rumblings from people I line-managed that they were unhappy with some things they had heard on the grapevine. Primarily, one new requirement was performing a mandatory presentation in front of the entire practice - no exceptions. This troubled a lot of the team, particularly some neurodivergent team members and introverted people who simply can't talk in front of other people. When it was first announced, every one of my reportees directly messaged me with their concerns. Finding something unique to talk about was difficult enough, let alone be judged by other people, some far more experienced than others. It just wasn't going to work.
 
-The following HTML `<h1>`—`<h6>` elements represent six levels of section headings. `<h1>` is the highest section level while `<h6>` is the lowest.
+We had a weekly practice meeting, it wasn't mandatory but out of almost 30 people, only 3 or 4 people showed up every week. Sometimes even less! The dedicated slack channel was non-existent, once in a while someone would post a link to barely any reactions or discussions from the team, usually zero for both.
 
-# H1
+A few months later and a restructure within the business was implemented; the team size was reduced and I was to be part of a new leadership team of the department. My first task: to fix the largely negative yet non-existent team culture. We had our own moodbot that asked people on Slack how they are feeling at work, in terms of happiness. Unsurprisingly, Web was consistently at the very bottom of all engineering departments, it was clear that people in the team were not happy.
 
-## H2
+## Scrapping some unpopular decisions
 
-### H3
+First things, first. The mandatory presentation requirement was scrapped, at least the mandatory part was. The relief in the team was apparent, everyone was _immediately_ lifted by this change. People can still do presentations if they want to, and would still be encouraged to do so as part of their career progression, but it was no longer an obligation. Besides, there were plenty of other ways to contribute to the practice in meaningful ways, such as blogging or sharing content via Slack.
 
-#### H4
+## Re-introducing everyone
 
-##### H5
+Following the still-fairly-recent merge, the team behaved like they were all strangers - because they were! Part of the low engagement was purely driven by not knowing the other people they are engaging with. So starting with the first few weekly practice meetings, almost _everyone_ showed up to introduce themselves to the rest of the practice. Who were they? What are their interests?
 
-###### H6
+This change was a revelation; the following weeks, engagement in the slack channel increased, a consistently high attendance to the weekly meetings endured, moodbot was steadily climbing up the charts.
 
-## Paragraph
+## Soft-launching back-to-office
 
-<h3 class="font-sub-heading" data-astro-cid-y7tdhkjy="">Artificial intelligence in web development: there and back again</h3>
-Xerum, quo qui aut unt expliquam qui dolut labo. Aque venitatiusda cum, voluptionse latur sitiae dolessi aut parist aut dollo enim qui voluptate ma dolestendit peritin re plis aut quas inctum laceat est volestemque commosa as cus endigna tectur, offic to cor sequas etum rerum idem sintibus eiur? Quianimin porecus evelectur, cum que nis nust voloribus ratem aut omnimi, sitatur? Quiatem. Nam, omnis sum am facea corem alique molestrunt et eos evelece arcillit ut aut eos eos nus, sin conecerem erum fuga. Ri oditatquam, ad quibus unda veliamenimin cusam et facea ipsamus es exerum sitate dolores editium rerore eost, temped molorro ratiae volorro te reribus dolorer sperchicium faceata tiustia prat.
+Following the _bad thing_ in 2020, office attendance was very low. To begin with, I was the only person to physically going into the Manchester city centre office out of my department. This was linked to the low engagement issues we previously had; why would someone go into the office and sit with people they don't even know? Well, suddenly people did know each other.
 
-Itatur? Quiatae cullecum rem ent aut odis in re eossequodi nonsequ idebis ne sapicia is sinveli squiatum, core et que aut hariosam ex eat.
+After a few weeks I proposed something different - on every Thursday, the entire practice should go into the office. We all go out for lunch then do our practice meetings in-person. At first I was skeptical and it was, of course, not mandatory. But suddenly the entire Manchester team was coming into the office every single week. There were similar results throughout the country, even remote workers would come in occasionally. The team, having not been integrated at all previously, was now completely integrated on a geographical level. Moodbot was almost number one in a matter of weeks.
 
-## Images
+## Restructured practice meetings
 
-### Syntax
+Following on from the cancellation of the mandatory presentations, we needed a new format for our practice sessions. It needed to be fresh and engaging: people had to _want_ to attend, without it being laborious. So, the final idea was to rotate each session: we'd open every session with any news or announcements, followed by a different format every week.
 
-```markdown
-![Alt text](./full/or/relative/path/of/image)
-```
+The first session of the month would be something I named 'Question Time', after the political tv show (the format also happened to be very derivative of that show as well). I created a postbox form, people could submit their own questions to pose to the rest of the group and each session I would pick 2 or 3 questions and ask the group what people thought. _What is a feature of JavaScript people don't use enough?_ _What technologies are you considering dropping?_ _Tabs vs spaces_, etc...
 
-### Output
+Next up was a simple show and tell - _what cool things have you seen in the wild?_ _Have you been working on any side projects?_
 
-<!-- ![blog placeholder](/ocean.webp) -->
+The third session was a slot for people to present on a topic if they wished, but a key difference was to split this session into mini-presentations that were a lot more relaxed. It was more of a tech-demo than a presentation and surprisingly, more people volunteered now, knowing that it was a low-key affair and they knew who they were talking to.
 
-## Blockquotes
+The final session was what I called the 'wildcard'; basically, we'd do whatever we feel like doing. Have a chat, play a game - it was a purely social affair to keep the team bonded. And it worked!
 
-The blockquote element represents content that is quoted from another source, optionally with a citation which must be within a `footer` or `cite` element, and optionally with in-line changes such as annotations and abbreviations.
+## Conclusion
 
-### Blockquote without attribution
+Within the space of a few weeks, our department went from dead last to dead first. By a long way. People from other teams were asking me what the secret was, because they had similar issues.
 
-#### Syntax
+Over time, the formats were experimented with but we kept going back to the old favourites that always remained popular. Attendance remained consistently high also, so obviously it was popular with the team. We even had an inter-office meetup in London, the first one in several years.
 
-```markdown
-> Tiam, ad mint andaepu dandae nostion secatur sequo quae.  
-> **Note** that you can use _Markdown syntax_ within a blockquote.
-```
-
-#### Output
-
-> Tiam, ad mint andaepu dandae nostion secatur sequo quae.  
-> **Note** that you can use _Markdown syntax_ within a blockquote.
-
-### Blockquote with attribution
-
-#### Syntax
-
-```markdown
-> Don't communicate by sharing memory, share memory by communicating.<br>
-> — <cite>Rob Pike[^1]</cite>
-```
-
-#### Output
-
-> Don't communicate by sharing memory, share memory by communicating.<br>
-> — <cite>Rob Pike[^1]</cite>
-
-[^1]: The above quote is excerpted from Rob Pike's [talk](https://www.youtube.com/watch?v=PAAkCSZUG1c) during Gopherfest, November 18, 2015.
-
-## Tables
-
-### Syntax
-
-```markdown
-| Italics   | Bold     | Code   |
-| --------- | -------- | ------ |
-| _italics_ | **bold** | `code` |
-```
-
-### Output
-
-| Italics   | Bold     | Code   |
-| --------- | -------- | ------ |
-| _italics_ | **bold** | `code` |
-
-## Code Blocks
-
-### Syntax
-
-we can use 3 backticks ``` in new line and write snippet and close with 3 backticks on new line and to highlight language specific syntax, write one word of language name after first 3 backticks, for eg. html, javascript, css, markdown, typescript, txt, bash
-
-````markdown
-```html
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>Example HTML5 Document</title>
-  </head>
-  <body>
-    <p>Test</p>
-  </body>
-</html>
-```
-````
-
-### Output
-
-```html
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>Example HTML5 Document</title>
-  </head>
-  <body>
-    <p>Test</p>
-  </body>
-</html>
-```
-
-## List Types
-
-### Ordered List
-
-#### Syntax
-
-```markdown
-1. First item
-2. Second item
-3. Third item
-```
-
-#### Output
-
-1. First item
-2. Second item
-3. Third item
-
-### Unordered List
-
-#### Syntax
-
-```markdown
-- List item
-- Another item
-- And another item
-```
-
-#### Output
-
-- List item
-- Another item
-- And another item
-
-### Nested list
-
-#### Syntax
-
-```markdown
-- Fruit
-  - Apple
-  - Orange
-  - Banana
-- Dairy
-  - Milk
-  - Cheese
-```
-
-#### Output
-
-- Fruit
-  - Apple
-  - Orange
-  - Banana
-- Dairy
-  - Milk
-  - Cheese
-
-## Other Elements — abbr, sub, sup, kbd, mark
-
-### Syntax
-
-```markdown
-<abbr title="Graphics Interchange Format">GIF</abbr> is a bitmap image format.
-
-H<sub>2</sub>O
-
-X<sup>n</sup> + Y<sup>n</sup> = Z<sup>n</sup>
-
-Press <kbd>CTRL</kbd> + <kbd>ALT</kbd> + <kbd>Delete</kbd> to end the session.
-
-Most <mark>salamanders</mark> are nocturnal, and hunt for insects, worms, and other small creatures.
-```
-
-### Output
-
-<abbr title="Graphics Interchange Format">GIF</abbr> is a bitmap image format.
-
-H<sub>2</sub>O
-
-X<sup>n</sup> + Y<sup>n</sup> = Z<sup>n</sup>
-
-Press <kbd>CTRL</kbd> + <kbd>ALT</kbd> + <kbd>Delete</kbd> to end the session.
-
-Most <mark>salamanders</mark> are nocturnal, and hunt for insects, worms, and other small creatures.
+This remains something I'm still very proud of, to create something from nothing like that. Sometimes, all it takes is a few little tweaks - at the end of the day, it's the people that make the culture, so if you want a happy culture, you need happy people! 🙂
