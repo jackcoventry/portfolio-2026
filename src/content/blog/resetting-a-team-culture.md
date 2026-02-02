@@ -1,5 +1,5 @@
 ---
-title: "Tuning a team's culture"
+title: 'Resetting a team culture'
 description: 'Turning a team culture from nothing to something special'
 pubDate: 'Jan 11 2026'
 listingImage: '../../assets/mountains.webp'
