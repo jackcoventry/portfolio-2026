@@ -6,7 +6,7 @@ listingImage: '../../assets/trees.webp'
 duration: 5
 ---
 
-# The topic of artificial intelligence in web development has already been discussed to death but I am here in the role of the gravedigger to add another 2 pence to the coffers. This isn’t a hot take, more of a lukewarm take and venting for my own sanity.
+## The topic of artificial intelligence in web development has already been discussed to death but I am here in the role of the gravedigger to add another 2 pence to the coffers. This isn’t a hot take, more of a lukewarm take and venting for my own sanity.
 
 The point of this article is not going to attack, defend or review any particular platform, as I think my points stand up regardless. At the time of writing, AI is still limited to the boundary of human knowledge. Given, it's already immensely powerful with a profound pool of information, but it does not _yet_ have the capabilities to go beyond our own limitations. AI still has a long way to go to earn our trust.
 
