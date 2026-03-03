@@ -5,6 +5,7 @@ dist/
 # generated
 .astro/
 coverage
+.lighthouseci
 
 # dependencies
 node_modules/
@@ -32,3 +33,5 @@ pnpm-debug.log*
 /src/design-tokens/icons.json
 
 .TODO
+.vercel
+.env*.local
