@@ -17,7 +17,16 @@
     "test:coverage": "vitest run --coverage",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
-    "verify": "npm run prettier && npm run lint && npm run typecheck && npm run test:run"
+    "verify": "npm run prettier && npm run lint && npm run typecheck && npm run test:run",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,astro,json,md,css}": [
+      "prettier . --check"
+    ],
+    "*.{js,jsx,ts,tsx,astro}": [
+      "eslint ."
+    ]
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.18",
@@ -31,6 +40,7 @@
     "@astrojs/check": "^0.9.6",
     "@astrojs/rss": "^4.0.15",
     "@astrojs/sitemap": "^3.7.0",
+    "@lhci/cli": "^0.15.1",
     "@playwright/test": "^1.57.0",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
@@ -40,7 +50,9 @@
     "@vitest/ui": "^4.0.17",
     "eslint": "^10.0.2",
     "eslint-plugin-astro": "^1.6.0",
+    "husky": "^9.1.7",
     "jsdom": "^27.4.0",
+    "lint-staged": "^16.3.1",
     "prettier": "^3.7.4",
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-organize-imports": "^4.3.0",
