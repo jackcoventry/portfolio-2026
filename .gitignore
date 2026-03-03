@@ -33,3 +33,5 @@ pnpm-debug.log*
 /src/design-tokens/icons.json
 
 .TODO
+.vercel
+.env*.local

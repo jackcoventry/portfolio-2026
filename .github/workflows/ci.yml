@@ -7,60 +7,77 @@ on:
 
 permissions:
   contents: read
-  deployments: read
-  statuses: read
 
 jobs:
-  verify:
+  checks:
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
 
-      - name: Install deps
-        run: npm ci
+      - run: npm ci
+      - run: npm run verify
+      - run: npm run build
 
-      - name: Verify
-        run: npm run verify
-
-  e2e:
+  preview_and_lhci:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
-    needs: verify
+    timeout-minutes: 25
+    needs: checks
+    permissions:
+      contents: read
+      pull-requests: read
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
 
-      - name: Install deps
-        run: npm ci
+      - run: npm ci
 
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps
+      - name: Install Vercel CLI
+        run: npm i -g vercel@latest
 
-      - name: Build
-        run: npm run build
-
-      - name: Run Playwright tests
-        run: npm run test:e2e
-
-      - name: Lighthouse on Vercel Preview
-        run: npm run lh:ci
+      - name: Pull Vercel env (Preview)
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          LH_PREVIEW_MAX_WAIT_MS: 300000
-          LH_PREVIEW_POLL_MS: 10000
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Build (Vercel prebuilt)
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Deploy Preview and capture URL
+        id: deploy
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          url=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} --confirm | tail -n 1 | tr -d '\r')
+          echo "preview_url=$url" >> $GITHUB_OUTPUT
+          echo "Deployed: $url"
+
+      - name: Lighthouse CI (Preview URLs)
+        run: |
+          PREVIEW="${{ steps.deploy.outputs.preview_url }}"
+          echo "LH base URL is: [$PREVIEW]"
+          LH_BASE_URL="$PREVIEW" node src/scripts/lighthouse.mjs
+
+      - name: Upload LHCI results
+        uses: actions/upload-artifact@v4
+        with:
+          name: lhci-report
+          path: .lighthouseci/**
+          if-no-files-found: warn

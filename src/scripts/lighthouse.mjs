@@ -87,6 +87,7 @@ function urlsFor(base) {
 
 async function main() {
   let baseUrl = process.env.LH_BASE_URL;
+  baseUrl = baseUrl?.trim();
 
   if (!baseUrl && process.env.GITHUB_ACTIONS === 'true') {
     baseUrl = await getVercelPreviewUrlFromGitHub();
