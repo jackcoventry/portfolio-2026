@@ -62,7 +62,7 @@ const { url } = Astro.props;
     ta.style.top = '-9999px';
     document.body.appendChild(ta);
     ta.select();
-    document.execCommand('copy');
+    (document as any).execCommand('copy');
     ta.remove();
 
     flashCopied();

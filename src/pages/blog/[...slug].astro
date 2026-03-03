@@ -3,14 +3,20 @@ import { type CollectionEntry, getCollection, render } from 'astro:content';
 import Layout from '@/layouts/Layout.astro';
 import BlogHero from '@/components/BlogHero/BlogHero.astro';
 
+type Props = CollectionEntry<'blog'>;
+type Heading = {
+  depth: number;
+  slug: string;
+  text: string;
+};
+
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
-  return posts.map((post) => ({
+  return posts.map((post: Props) => ({
     params: { slug: post.id },
     props: post,
   }));
 }
-type Props = CollectionEntry<'blog'>;
 
 const post = Astro.props;
 const { Content, headings } = await render(post);
@@ -32,8 +38,8 @@ const { title, pubDate, listingImage, duration } = post.data;
           >
             {
               headings
-                .filter((h) => h.depth === 2 || h.depth === 3)
-                .map((h) => (
+                .filter((h: Heading) => h.depth === 2 || h.depth === 3)
+                .map((h: Heading) => (
                   <li class={`depth-${h.depth}`}>
                     <a href={`#${h.slug}`} class="font-body [@media(hover:hover)]:hover:underline">
                       {h.text}

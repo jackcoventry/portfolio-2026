@@ -1,17 +1,19 @@
 ---
 import Dot from '@/components/Dot/Dot.astro';
 import Layout from '@/layouts/Layout.astro';
-import { getCollection } from 'astro:content';
+import { getCollection, type CollectionEntry } from 'astro:content';
+
+type Props = CollectionEntry<'pages'>;
 
 export async function getStaticPaths() {
   const entries = await getCollection('pages');
-  return entries.map((entry) => ({
+  return entries.map((entry: Props) => ({
     params: { slug: entry.slug },
     props: { entry },
   }));
 }
 
-const { entry } = Astro.props;
+const { entry } = Astro.props as Props;
 const { Content } = await entry.render();
 const { data } = entry;
 ---

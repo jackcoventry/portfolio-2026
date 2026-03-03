@@ -13,8 +13,13 @@ type Props = {
   text?: string;
 };
 
+type BlogPost = {
+  pubDate: number;
+};
+
 const posts = (await getCollection('blog')).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+  (a: { data: BlogPost }, b: { data: BlogPost }) =>
+    b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
 
 const { title, text } = Astro.props;
@@ -43,18 +48,26 @@ const { title, text } = Astro.props;
   {
     posts.length > 0 ? (
       <ul class="layout-content | grid max-w-3xl gap-4 py-7 xl:max-w-7xl xl:grid-cols-3">
-        {posts?.map((item, index) => (
-          <li class="col-span-1">
-            <SwipeImage threshold={0.3} delayMs={200 * index}>
-              <BlogTile
-                title={item.data.title}
-                text={item.data.description}
-                href={`/blog/${item.id}`}
-                image={item.data.listingImage?.src}
-              />
-            </SwipeImage>
-          </li>
-        ))}
+        {posts?.map(
+          (
+            item: {
+              data: any;
+              id: any;
+            },
+            index: number
+          ) => (
+            <li class="col-span-1">
+              <SwipeImage threshold={0.3} delayMs={200 * index}>
+                <BlogTile
+                  title={item.data.title}
+                  text={item.data.description}
+                  href={`/blog/${item.id}`}
+                  image={item.data.listingImage?.src}
+                />
+              </SwipeImage>
+            </li>
+          )
+        )}
       </ul>
     ) : null
   }
