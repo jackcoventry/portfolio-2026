@@ -13,6 +13,10 @@ import data from '@/data/navigation.json';
 import { SITE_TITLE, SITE_DESCRIPTION } from '@/consts/consts';
 
 const { id } = Astro.props;
+
+const isVercel = Boolean(process.env.VERCEL);
+const isProd = import.meta.env.PROD;
+const enableAnalytics = isProd && isVercel;
 ---
 
 <!doctype html>
@@ -27,6 +31,6 @@ const { id } = Astro.props;
       <ScrollProvider />
     </main>
     <Footer items={data.main} />
-    <Analytics />
+    {enableAnalytics && <Analytics />}
   </body>
 </html>
