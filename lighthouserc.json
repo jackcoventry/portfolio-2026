@@ -1,8 +1,8 @@
 {
   "ci": {
     "collect": {
-      "numberOfRuns": 3,
-      "url": ["http://localhost:4173/", "http://localhost:4173/blog/"]
+      "numberOfRuns": 1,
+      "settings": { "preset": "desktop" }
     },
     "assert": {
       "assertions": {

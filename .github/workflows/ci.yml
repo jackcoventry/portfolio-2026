@@ -5,6 +5,11 @@ on:
   push:
     branches: [main]
 
+permissions:
+  contents: read
+  deployments: read
+  statuses: read
+
 jobs:
   verify:
     runs-on: ubuntu-latest
@@ -52,3 +57,8 @@ jobs:
 
       - name: Run Playwright tests
         run: npm run test:e2e
+
+      - name: Lighthouse on Vercel Preview
+        run: npm run lh:ci
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
