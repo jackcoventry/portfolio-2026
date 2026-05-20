@@ -4,7 +4,7 @@
   },
   "bio": {
     "title": "About",
-    "text": "I'm Jack and I'm passionate about creating accessible UI, design systems and cross-functional collaboration; I have spent the last 14 years building human-focused digital experiences, including CMS and API integrations, UX development and accessibility. Originally from a background in music production, I'm a huge film and music nerd but I also like games, writing, travel, reading and making music. Based in Manchester.",
+    "text": "I'm Jack, a web engineer with 13+ years of experience building human-focused digital experiences. My specialisms include design systems, accessible UI, leadership and system integrations within cross-functional teams. Originally coming from a background in music production, I'm a huge film and music nerd but I also like games, writing, travel, reading and making music. Based in Manchester.",
     "tools": [
       {
         "id": "react",
@@ -46,21 +46,21 @@
     "items": [
       {
         "title": "HOAM Design System",
-        "text": "A design system for the coffee brand ",
+        "text": "A design system for a coffee brand.",
         "href": "https://hds.jrc.codes",
         "github": "https://github.com/jackcoventry/hoam-design-system"
       },
       {
-        "title": "Coffee Search",
-        "text": "An AI-powered chatbot for coffee recommendations",
-        "href": "https://coffee.jrc.codes",
-        "github": "https://github.com/jackcoventry/coffee-search"
-      },
-      {
         "title": "Farkle friend",
-        "text": "A local farkle multiplayer dice game, made with Next.js and React. Including different game variations and alternative modes.",
+        "text": "A local farkle multiplayer dice game, made with Next.js and React.",
         "href": "https://farkle.jrc.codes",
         "github": "https://github.com/jackcoventry/farkle-friend"
+      },
+      {
+        "title": "Coffee Search",
+        "text": "An AI-powered chatbot demo for coffee recommendations.",
+        "href": "https://coffee.jrc.codes",
+        "github": "https://github.com/jackcoventry/coffee-search"
       }
     ]
   },

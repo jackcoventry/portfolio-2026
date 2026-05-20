@@ -13,12 +13,17 @@ const description =
   'Writing on web engineering, leadership, accessibility, and human-focused digital experiences.';
 
 export const getStaticPaths = (async ({ paginate }) => {
-  const allPosts = await getCollection('blog');
+  const isPublishedPost = (post: BlogEntry): boolean => {
+    return post.data.draft !== true;
+  };
+
+  const sortByNewest = (a: BlogEntry, b: BlogEntry): number => {
+    return b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
+  };
+
+  const posts = (await getCollection('blog', isPublishedPost)).sort(sortByNewest);
+
   const PAGE_SIZE = 6;
-  const posts = allPosts.sort(
-    (a: { data: BlogEntry }, b: { data: BlogEntry }) =>
-      b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-  );
 
   return paginate(posts, { pageSize: PAGE_SIZE });
 }) satisfies GetStaticPaths;
@@ -42,21 +47,27 @@ const schema = {
     </div>
   </section>
   <section class="p-7">
-    <ul class="mx-auto grid max-w-96 gap-4 xl:max-w-7xl xl:grid-cols-3">
-      {
-        page.data?.map((item) => (
-          <li class="col-span-1">
-            <BlogTile
-              title={item.data.title}
-              text={item.data.description}
-              href={`/blog/${item.id}`}
-              headingLevel={2}
-              image={item.data.listingImage?.src}
-            />
-          </li>
-        ))
-      }
-    </ul>
+    {
+      page.data.length > 0 ? (
+        <ul class="mx-auto grid max-w-96 gap-4 xl:max-w-7xl xl:grid-cols-3">
+          {page.data?.map((item) => (
+            <li class="col-span-1">
+              <BlogTile
+                title={item.data.title}
+                text={item.data.description}
+                href={`/blog/${item.id}`}
+                headingLevel={2}
+                image={item.data.listingImage?.src}
+              />
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div class="mx-auto grid max-w-96 gap-4 text-center xl:max-w-7xl">
+          <h2 class="font-sub-heading text-gray-500">Nothing here yet!</h2>
+        </div>
+      )
+    }
 
     <nav
       aria-label="Pagination"

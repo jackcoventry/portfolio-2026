@@ -13,11 +13,17 @@ type Props = {
   text?: string;
 };
 
-const posts = (await getCollection('blog')).sort(
-  (a: CollectionEntry<'blog'>, b: CollectionEntry<'blog'>) =>
-    b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-);
+type BlogEntry = CollectionEntry<'blog'>;
 
+const isPublishedPost = (post: BlogEntry): boolean => {
+  return post.data.draft !== true;
+};
+
+const sortByNewest = (a: BlogEntry, b: BlogEntry): number => {
+  return b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
+};
+
+const posts: BlogEntry[] = (await getCollection('blog', isPublishedPost)).sort(sortByNewest);
 const { title, text } = Astro.props;
 ---
 
