@@ -2,37 +2,70 @@
   "spacing": {
     "$type": "dimension",
     "0": {
-      "$value": "0px"
+      "$value": "0px",
+      "$extensions": {
+        "semantic": "0"
+      }
     },
     "1": {
-      "$value": "4px"
+      "$value": "4px",
+      "$extensions": {
+        "semantic": "2xs"
+      }
     },
     "2": {
-      "$value": "8px"
+      "$value": "8px",
+      "$extensions": {
+        "semantic": "xs"
+      }
     },
     "3": {
-      "$value": "12px"
+      "$value": "12px",
+      "$extensions": {
+        "semantic": "sm"
+      }
     },
     "4": {
-      "$value": "16px"
+      "$value": "16px",
+      "$extensions": {
+        "semantic": "md"
+      }
     },
     "5": {
-      "$value": "24px"
+      "$value": "24px",
+      "$extensions": {
+        "semantic": "lg"
+      }
     },
     "6": {
-      "$value": "32px"
+      "$value": "32px",
+      "$extensions": {
+        "semantic": "xl"
+      }
     },
     "7": {
-      "$value": "56px"
+      "$value": "56px",
+      "$extensions": {
+        "semantic": "2xl"
+      }
     },
     "8": {
-      "$value": "72px"
+      "$value": "72px",
+      "$extensions": {
+        "semantic": "3xl"
+      }
     },
     "9": {
-      "$value": "96px"
+      "$value": "96px",
+      "$extensions": {
+        "semantic": "4xl"
+      }
     },
     "10": {
-      "$value": "120px"
+      "$value": "120px",
+      "$extensions": {
+        "semantic": "5xl"
+      }
     }
   }
 }

@@ -53,13 +53,13 @@ const schema = {
   <BlogHero title={title} pubDate={pubDate} duration={Number(duration)} />
   <article class="grid grid-cols-4">
     <section class="col-span-4 xl:col-span-1">
-      <nav class="sticky top-0 mt-2 px-5 py-4 xl:mt-9" aria-label="Contents">
-        <details class="border-tertiary flex flex-col border px-5 py-4">
+      <nav class="mt-xs px-lg xl:mt-4xl sticky top-0 py-4" aria-label="Contents">
+        <details class="border-tertiary px-lg py-md flex flex-col border">
           <summary class="relative flex cursor-pointer items-center justify-between"
             ><h2 class="font-body xl:font-sub-heading">Contents</h2></summary
           >
           <ol
-            class="flex max-h-96 list-decimal flex-col gap-2 overflow-auto px-5 pt-4"
+            class="gap-xs px-lg pt-md flex max-h-96 list-decimal flex-col overflow-auto"
             data-lenis-prevent
           >
             {
@@ -78,11 +78,11 @@ const schema = {
       </nav>
     </section>
     <section
-      class="blog-post-content body-text col-span-4 flex flex-col gap-6 px-5 py-5 xl:col-span-2 xl:col-start-2 xl:py-9"
+      class="blog-post-content body-text gap-xl px-lg py-lg xl:py-4xl col-span-4 flex flex-col xl:col-span-2 xl:col-start-2"
     >
       <Content />
     </section>
-    <section class="-mt-8 hidden p-6 xl:block">
+    <section class="-mt-3xl p-xl hidden xl:block">
       {
         listingImage && (
           <Image

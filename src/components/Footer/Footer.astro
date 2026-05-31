@@ -15,9 +15,9 @@ const date = new Date().getFullYear();
 const { items = [] } = Astro.props;
 ---
 
-<footer class="layout-content | py-7">
-  <div class="grid grid-cols-1 gap-5 xl:grid-cols-3">
-    <div class="font-body order-2 col-span-1 mt-auto flex flex-col gap-5 xl:order-1">
+<footer class="layout-content | py-2xl">
+  <div class="gap-lg grid grid-cols-1 xl:grid-cols-3">
+    <div class="font-body gap-lg order-2 col-span-1 mt-auto flex flex-col xl:order-1">
       <p>
         Copyright &copy {date}
       </p>
@@ -26,11 +26,11 @@ const { items = [] } = Astro.props;
     <nav
       id="navigationFooter"
       aria-label="Footer"
-      class="order-1 col-span-2 flex flex-col gap-5 xl:order-2 xl:items-end xl:justify-end"
+      class="gap-lg order-1 col-span-2 flex flex-col xl:order-2 xl:items-end xl:justify-end"
     >
       {
         items?.length > 0 ? (
-          <ul class="mt-auto flex gap-5 max-lg:flex-col">
+          <ul class="gap-lg mt-auto flex max-lg:flex-col">
             {items.map((item: NavItem) => {
               const openInNewTab = Boolean(item?.externalLink);
               const attributes = {
