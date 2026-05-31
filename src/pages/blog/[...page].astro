@@ -39,17 +39,17 @@ const schema = {
 ---
 
 <Layout id="listing" title={`Blog | ${SITE_TITLE}`} description={description} schema={schema}>
-  <section class="bg-secondary-light grid grid-cols-1 items-center overflow-hidden px-5 py-7">
-    <div class="mx-auto p-7">
+  <section class="bg-secondary-light px-lg py-2xl grid grid-cols-1 items-center overflow-hidden">
+    <div class="p-2xl mx-auto">
       <h1 class="font-heading">
         Blog<Dot />
       </h1>
     </div>
   </section>
-  <section class="p-7">
+  <section class="p-2xl">
     {
       page.data.length > 0 ? (
-        <ul class="mx-auto grid max-w-96 gap-4 xl:max-w-7xl xl:grid-cols-3">
+        <ul class="gap-md mx-auto grid max-w-96 xl:max-w-7xl xl:grid-cols-3">
           {page.data?.map((item) => (
             <li class="col-span-1">
               <BlogTile
@@ -63,7 +63,7 @@ const schema = {
           ))}
         </ul>
       ) : (
-        <div class="mx-auto grid max-w-96 gap-4 text-center xl:max-w-7xl">
+        <div class="gap-md mx-auto grid max-w-96 text-center xl:max-w-7xl">
           <h2 class="font-sub-heading text-gray-500">Nothing here yet!</h2>
         </div>
       )
@@ -71,7 +71,7 @@ const schema = {
 
     <nav
       aria-label="Pagination"
-      class="font-sub-heading grid gap-5 p-7 pb-0 text-center lg:grid-cols-3"
+      class="font-sub-heading gap-lg p-2xl grid pb-0 text-center lg:grid-cols-3"
     >
       {
         page.url.prev ? (

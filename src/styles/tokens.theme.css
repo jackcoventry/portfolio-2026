@@ -1,0 +1,57 @@
+/**
+ * Do not edit directly, this file was auto-generated.
+ */
+
+@theme {
+  --color-sun-100: #ffffff;
+  --color-sun-200: #fcfcfb;
+  --color-sun-300: #f7f6f4;
+  --color-sun-400: #f1efea;
+  --color-sun-500: #e9e6df;
+  --color-sun-600: #d9d5cb;
+  --color-sun-700: #c4bfb3;
+  --color-sun-800: #a9a394;
+  --color-sun-900: #8c8576;
+  --color-moon-100: #f4f5f6;
+  --color-moon-200: #e1e3e6;
+  --color-moon-300: #c6cad0;
+  --color-moon-400: #9aa1aa;
+  --color-moon-500: #6b7280;
+  --color-moon-600: #4b5563;
+  --color-moon-700: #374151;
+  --color-moon-800: #1f2937;
+  --color-moon-900: #111827;
+  --color-star-100: #fff1ee;
+  --color-star-200: #ffdad3;
+  --color-star-300: #ffb8a8;
+  --color-star-400: #ff8f78;
+  --color-star-500: #f76b4d;
+  --color-star-600: #d9573e;
+  --color-star-700: #b84532;
+  --color-star-800: #933429;
+  --color-star-900: #6f251d;
+  --font-title-1:
+    400 clamp(1rem, min(20vmin, 10vw), 10rem)/0.875 Forum, system-ui, -apple-system, 'Segoe UI',
+    'Helvetica Neue', Arial, serif;
+  --font-title-2:
+    400 32px/1.1 Outfit, system-ui, -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  --font-title-3:
+    300 32px/1.1 Outfit, system-ui, -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  --font-body-1:
+    400 18px/1.5 Outfit, system-ui, -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  --font-body-2:
+    300 24px/1.5 Outfit, system-ui, -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  --font-button-1:
+    400 18px/1.5 Forum, system-ui, -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, serif;
+  --spacing-0: 0px;
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-5: 24px;
+  --spacing-6: 32px;
+  --spacing-7: 56px;
+  --spacing-8: 72px;
+  --spacing-9: 96px;
+  --spacing-10: 120px;
+}

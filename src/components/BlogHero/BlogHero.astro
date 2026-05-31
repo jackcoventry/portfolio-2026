@@ -10,8 +10,8 @@ const { title, pubDate, duration = 1 } = Astro.props;
 const date = new Date(pubDate).toLocaleDateString('en-GB');
 ---
 
-<header class="bg-tertiary-light py-9" data-testid="blog-hero">
-  <div class="max-w-8xl mx-auto flex flex-col gap-4 px-2 pt-4 text-center">
+<header class="bg-tertiary-light py-4xl" data-testid="blog-hero">
+  <div class="max-w-8xl gap-md px-xs pt-md mx-auto flex flex-col text-center">
     <h1 class="font-heading">{title}</h1>
     <p class="font-title">{date}</p>
     <div class="flex justify-center gap-3">

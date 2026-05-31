@@ -22,7 +22,7 @@ type Props = {
 const { title, text, tools } = Astro.props;
 ---
 
-<section class="-mt-9 overflow-hidden">
+<section class="-mt-4xl overflow-hidden">
   <div class="mx-auto flex max-w-6xl">
     <BannerClip initialInsetPercentage={18} initialScale={1.34} ease={0.09}>
       <Image
@@ -36,15 +36,15 @@ const { title, text, tools } = Astro.props;
   </div>
 </section>
 
-<section class="bg-tertiary-light -mt-9 min-h-dvh">
-  <div class="layout-content | py-7">
-    <div class="my-10 grid grid-cols-1 gap-8 lg:grid-cols-3">
+<section class="bg-tertiary-light -mt-4xl min-h-dvh">
+  <div class="layout-content | py-2xl">
+    <div class="my-5xl gap-3xl grid grid-cols-1 lg:grid-cols-3">
       <div class="col-span-1 lg:col-span-2">
         <h2 class="font-heading">
           {title}<Dot />
         </h2>
         {text && <p class="font-body lg:font-title pt-6 text-left">{text}</p>}
-        <div class="flex flex-col gap-5 py-8">
+        <div class="gap-lg py-3xl flex flex-col">
           <LogoBlock items={tools} />
         </div>
       </div>

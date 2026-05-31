@@ -27,12 +27,12 @@ const posts: BlogEntry[] = (await getCollection('blog', isPublishedPost)).sort(s
 const { title, text } = Astro.props;
 ---
 
-<section class="-mt-9 overflow-hidden">
+<section class="-mt-4xl overflow-hidden">
   <div class="layout-content | flex max-w-6xl">
     <BannerClip initialInsetPercentage={22} initialScale={1.38} ease={0.085}>
       <Image
         src={bannerImage}
-        alt=""
+        alt="City skyline at dusk with a gradient of pink and purple hues in the sky"
         loading="lazy"
         widths={[720, 1080, 1440]}
         sizes="(min-width: 1280px) 72rem, 100vw"
@@ -41,8 +41,8 @@ const { title, text } = Astro.props;
   </div>
 </section>
 
-<section class="pt-9">
-  <div class="flex flex-col gap-6 px-5">
+<section class="pt-4xl">
+  <div class="gap-xl px-lg flex flex-col">
     {
       title && (
         <h2 class="font-heading flex justify-center">
@@ -55,7 +55,7 @@ const { title, text } = Astro.props;
   </div>
   {
     posts.length > 0 ? (
-      <ul class="layout-content | grid max-w-3xl gap-4 py-7 xl:max-w-7xl xl:grid-cols-3">
+      <ul class="layout-content | gap-md py-2xl grid max-w-3xl xl:max-w-7xl xl:grid-cols-3">
         {posts?.map((item: CollectionEntry<'blog'>, index: number) => (
           <li class="col-span-1">
             <SwipeImage

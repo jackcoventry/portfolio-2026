@@ -4,9 +4,10 @@ description: 'A critical look at AI coding tools, where they help, where they mi
 pubDate: 'November 19 2024'
 listingImage: '../../assets/trees.webp'
 duration: 5
+draft: true
 ---
 
-The topic of artificial intelligence in web development has already been discussed to death but I am here in the role of the gravedigger to add another 2 pence to the coffers. This isn’t a hot take, more of a lukewarm take and venting for my own sanity.
+The topic of artificial intelligence in web development has already been discussed to death so this isn’t a hot take, more of a lukewarm take and venting for my own sanity.
 
 The point of this article is not going to attack, defend or review any particular platform, as I think my points stand up regardless. At the time of writing, AI is still limited to the boundary of human knowledge. Given, it's already immensely powerful with a profound pool of information, but it does not _yet_ have the capabilities to go beyond our own limitations. AI still has a long way to go to earn our trust.
 
@@ -34,6 +35,10 @@ I was stuck, desperate, and I needed to find something that would help me get ou
 
 You still need a solid foundation and understanding of how your tooling works, because if no-one has had this issue before, AI sure as hell won’t know either. But it will (probably) gaslight you into thinking it does.
 
+If you run out of tokens, you're screwed!
+
+It gets you some of the way but then you run out of usage and you have to fill in the blanks yourself, but you're not close enough to the codebase to be effective so your own context gets muddled and split between two things
+
 ## AI is being promoted by people who don't code
 
 I've mostly heard two strong view points on introducing AI into a development pipeline. They are "I hate writing this type of code, and this does it for me" and - more scarily - "This means we can charge the same amount for half of the time spent". Unsurprisingly, the second quote is a pretty much direct quote from a board-member I knew and surprisingly, the first quote is from a developer. Based on these two people, you would think the only justification for using AI is to increase revenue and to prevent developers from doing work they don't want to do. Is it just me, or is that crazy?
@@ -41,6 +46,8 @@ I've mostly heard two strong view points on introducing AI into a development pi
 It seems to be the dream for some is that coding ceases to be a thing and is replaced by AI entirely. "It can replace junior developers" - okay, that is abhorrent but what about the next generation of coders? How will they break into the industry? "Developer's jobs will simply become overseeing automated pull requests" - wow,
 
 ## It puts unruly expectations and responsibilities on the individual developer
+
+## It's not going to replace you
 
 ...
 
@@ -51,3 +58,7 @@ AI can be helpful to troubleshoot an issue or perform a monotonous task. It can 
 ## Conclusion
 
 Even if the moral view point of not using it to save jobs and human creativity stands up, is it actually worth it? If you're using it for a client, do they even know the work they're paying you for is just feeding the infernal plagiarism machine? After getting into the hype and leaving with a sense of unease, I think AI can be used to set us up to do our job more efficiently, but it cannot do our job. Do any developers who enjoy their work also enjoy using AI? Shouldn't the people that use the tech dictate the conversation on this?
+
+I see people boycotting products that use AI, for some web development is immune to this critism. Who is boycotting x website because someone used Copilot?
+
+"AI is a loan"
