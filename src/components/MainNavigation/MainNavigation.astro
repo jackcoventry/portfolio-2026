@@ -13,6 +13,16 @@ interface Props {
 }
 
 const { items = [] } = Astro.props;
+
+function getNavLinkAttributes(item: NavItem) {
+  if (!item.externalLink) return { href: item.href };
+
+  return {
+    href: item.href,
+    rel: 'noopener noreferrer',
+    target: '_blank',
+  };
+}
 ---
 
 <a
@@ -31,16 +41,7 @@ const { items = [] } = Astro.props;
       </li>
       {
         items.slice(0, 3).map((item: NavItem) => {
-          const openInNewTab = Boolean(item?.externalLink);
-          const attributes = {
-            href: item.href,
-            ...(openInNewTab
-              ? {
-                  target: '_blank',
-                  rel: 'noopener noreferrer',
-                }
-              : null),
-          };
+          const attributes = getNavLinkAttributes(item);
           return (
             <li>
               <a {...attributes} class="font-body block">
@@ -118,16 +119,7 @@ const { items = [] } = Astro.props;
         <ul class="h-full content-center overflow-auto" data-lenis-prevent>
           {
             items.map((item: NavItem) => {
-              const openInNewTab = Boolean(item?.externalLink);
-              const attributes = {
-                href: item.href,
-                ...(openInNewTab
-                  ? {
-                      target: '_blank',
-                      rel: 'noopener noreferrer',
-                    }
-                  : null),
-              };
+              const attributes = getNavLinkAttributes(item);
               return (
                 <li class="p-xs">
                   <a

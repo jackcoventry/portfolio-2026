@@ -31,6 +31,10 @@ type InertElement = HTMLElement & {
   inert?: boolean;
 };
 
+type InitMainNavCleanup = {
+  destroy: () => void;
+};
+
 function warnMainNav(message: string, detail?: unknown) {
   if (import.meta.env.DEV) {
     console.warn(`[MainNav] ${message}`, detail);
@@ -62,13 +66,13 @@ function setInert(el: Element, shouldBeInert: boolean) {
   if ('inert' in inertEl) inertEl.inert = shouldBeInert;
 }
 
-export function initMainNav(scope: ParentNode = document): void {
+export function initMainNav(scope: ParentNode = document): InitMainNavCleanup | null {
   let els: NavEls;
   try {
     els = collectEls(scope);
   } catch (e) {
     warnMainNav('Unable to initialize navigation', e);
-    return;
+    return null;
   }
 
   const mqDesktop = globalThis.matchMedia('(min-width: 1024px)');
@@ -81,6 +85,7 @@ export function initMainNav(scope: ParentNode = document): void {
   let lastScrollY = window.scrollY;
   let pendingNavigationHref: string | null = null;
   let pendingNavigationTimer: ReturnType<typeof globalThis.setTimeout> | null = null;
+  let hideMenuTimer: ReturnType<typeof globalThis.setTimeout> | null = null;
 
   function applyNavOffset() {
     const h = els.mobileBar.offsetHeight || 0;
@@ -276,6 +281,11 @@ export function initMainNav(scope: ParentNode = document): void {
       return;
     }
 
+    if (hideMenuTimer != null) {
+      globalThis.clearTimeout(hideMenuTimer);
+      hideMenuTimer = null;
+    }
+
     isMenuOpen = true;
     lastFocused = document.activeElement;
 
@@ -316,8 +326,14 @@ export function initMainNav(scope: ParentNode = document): void {
     const reduce = globalThis.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const t = reduce ? 0 : 180;
 
-    globalThis.setTimeout(() => {
+    if (hideMenuTimer != null) {
+      globalThis.clearTimeout(hideMenuTimer);
+      hideMenuTimer = null;
+    }
+
+    hideMenuTimer = globalThis.setTimeout(() => {
       els.menu.hidden = true;
+      hideMenuTimer = null;
     }, t);
 
     setPageInert(false);
@@ -450,6 +466,11 @@ export function initMainNav(scope: ParentNode = document): void {
     mqDesktop.addEventListener('change', apply);
 
     apply();
+
+    return () => {
+      teardown();
+      mqDesktop.removeEventListener('change', apply);
+    };
   }
 
   function onGlobalShortcut(e: KeyboardEvent) {
@@ -494,7 +515,7 @@ export function initMainNav(scope: ParentNode = document): void {
   }
 
   applyNavOffset();
-  setupDesktopObserver();
+  const cleanupDesktopObserver = setupDesktopObserver();
   updateAtTop();
   setLogoVisibility();
   els.mobileLogo.classList.add('js-ready');
@@ -509,4 +530,38 @@ export function initMainNav(scope: ParentNode = document): void {
   els.panel.addEventListener('pointerdown', onPanelPointerDown);
   els.panel.addEventListener('pointercancel', onPanelPointerCancel);
   els.panel.addEventListener('click', onPanelClick);
+
+  return {
+    destroy() {
+      clearPendingRouteState();
+
+      if (hideMenuTimer != null) {
+        globalThis.clearTimeout(hideMenuTimer);
+        hideMenuTimer = null;
+      }
+
+      document.removeEventListener('keydown', onMenuKeydown, true);
+      document.removeEventListener('keydown', onGlobalShortcut, true);
+      document.removeEventListener('click', skipToContent);
+      window.removeEventListener('scroll', updateAtTop);
+      window.removeEventListener('resize', applyNavOffset);
+
+      els.toggle.removeEventListener('click', toggleMenu);
+      els.overlay.removeEventListener('click', onOverlayClick);
+      els.panel.removeEventListener('pointerdown', onPanelPointerDown);
+      els.panel.removeEventListener('pointercancel', onPanelPointerCancel);
+      els.panel.removeEventListener('click', onPanelClick);
+
+      cleanupDesktopObserver();
+      isMenuOpen = false;
+      els.mobileBar.dataset.menuOpen = 'false';
+      els.toggle.setAttribute('aria-expanded', 'false');
+      els.menu.hidden = true;
+      els.menu.style.opacity = '0';
+      els.menu.classList.add('pointer-events-none');
+      els.menu.setAttribute('aria-hidden', 'true');
+      setPageInert(false);
+      unlockScroll();
+    },
+  };
 }

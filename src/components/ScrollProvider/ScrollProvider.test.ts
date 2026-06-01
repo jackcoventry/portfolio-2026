@@ -74,6 +74,7 @@ describe('initScrollProvider', () => {
         return 1;
       })
     );
+    vi.stubGlobal('cancelAnimationFrame', vi.fn());
 
     vi.spyOn(history, 'pushState').mockImplementation(() => {});
   });
@@ -188,6 +189,20 @@ describe('initScrollProvider', () => {
     expect(window.__lenis).toBeUndefined();
 
     // make sure afterEach doesn't try to destroy twice
+    cleanup = null;
+  });
+
+  it('cancels the RAF loop when destroyed', () => {
+    setReducedMotion(false);
+    cleanup = initScrollProvider();
+
+    const res = cleanup;
+    if (!res || typeof res !== 'object' || !('destroy' in res)) throw new Error('Expected API');
+
+    res.destroy();
+
+    expect(cancelAnimationFrame).toHaveBeenCalledWith(1);
+
     cleanup = null;
   });
 
