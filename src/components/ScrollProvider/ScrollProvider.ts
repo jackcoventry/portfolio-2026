@@ -20,12 +20,16 @@ export function initScrollProvider(options: InitScrollProviderOptions = {}) {
   });
 
   window.__lenis = lenis;
+  let rafId: number | null = null;
+  let isDestroyed = false;
 
   const raf = (time: number) => {
+    if (isDestroyed) return;
+
     lenis.raf(time);
-    requestAnimationFrame(raf);
+    rafId = requestAnimationFrame(raf);
   };
-  requestAnimationFrame(raf);
+  rafId = requestAnimationFrame(raf);
 
   const onClick = (e: MouseEvent) => {
     const target = e.target;
@@ -66,6 +70,12 @@ export function initScrollProvider(options: InitScrollProviderOptions = {}) {
   return {
     lenis,
     destroy() {
+      isDestroyed = true;
+      if (rafId != null) {
+        cancelAnimationFrame(rafId);
+        rafId = null;
+      }
+
       document.removeEventListener('click', onClick);
       (lenis as unknown as { destroy?: () => void }).destroy?.();
       delete window.__lenis;

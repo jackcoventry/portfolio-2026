@@ -455,4 +455,42 @@ describe('initMainNav', () => {
     window.dispatchEvent(new Event('scroll'));
     expect(mobileBar.classList.contains('bar-visible')).toBe(true);
   });
+
+  it('returns a destroy function that removes global and element listeners', () => {
+    const { content, menu, mobileBar, skip, toggle } = setupDom();
+    installMatchMedia(false);
+    Object.defineProperty(window, 'scrollY', { value: 0, configurable: true });
+
+    const cleanup = initMainNav();
+    expect(cleanup).not.toBeNull();
+
+    toggle.click();
+    expect(toggle.getAttribute('aria-expanded')).toBe('true');
+
+    cleanup?.destroy();
+
+    expect(toggle.getAttribute('aria-expanded')).toBe('false');
+    expect(menu.hidden).toBe(true);
+
+    toggle.click();
+    expect(toggle.getAttribute('aria-expanded')).toBe('false');
+
+    const ev = new KeyboardEvent('keydown', {
+      bubbles: true,
+      cancelable: true,
+      altKey: true,
+      key: 'k',
+      code: 'KeyK',
+    });
+    document.dispatchEvent(ev);
+    expect(ev.defaultPrevented).toBe(false);
+    expect(toggle.getAttribute('aria-expanded')).toBe('false');
+
+    Object.defineProperty(window, 'scrollY', { value: 100, configurable: true });
+    window.dispatchEvent(new Event('scroll'));
+    expect(mobileBar.dataset.atTop).toBe('true');
+
+    fireEvent.click(skip, { bubbles: true });
+    expect(document.activeElement).not.toBe(content);
+  });
 });
