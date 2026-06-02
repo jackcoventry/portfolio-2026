@@ -15,7 +15,7 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier . --write",
     "prettier": "prettier . --check",
-    "tokens": "node config/style-dictionary.mjs",
+    "tokens": "node config/style-dictionary.mjs && prettier --write src/styles/tokens.theme.css src/styles/tokens.theme.ts src/styles/tokens.ts src/styles/spacing.css",
     "test": "vitest",
     "test:run": "vitest run",
     "test:ui": "vitest --ui",
