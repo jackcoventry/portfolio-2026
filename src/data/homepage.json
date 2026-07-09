@@ -4,7 +4,7 @@
   },
   "bio": {
     "title": "About",
-    "text": "I'm Jack, a web engineer with 13+ years of experience building human-focused digital experiences. My specialisms include design systems, accessible UI, leadership and system integrations within cross-functional teams. Originally coming from a background in music production, I'm a huge film and music nerd but I also like games, writing, travel, reading and making music. Based in Manchester.",
+    "text": "I'm Jack, a web engineer building human-focused digital experiences for 13+ years. My specialisms include design systems, accessible UI, leadership and system integrations within cross-functional teams. Originally coming from a background in music production, I'm a huge film and music nerd but I also like games, writing, travel, reading and making music. Based in Manchester.",
     "tools": [
       {
         "id": "react",
